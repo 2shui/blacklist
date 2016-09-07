@@ -16,6 +16,7 @@
 		<java.version>1.8</java.version>
 		<druid.version>1.0.23</druid.version>
 		<commons.lang3.version>3.3.2</commons.lang3.version>
+		<lucene.version>5.3.0</lucene.version>
 	</properties>
 
 	<dependencies>
@@ -37,6 +38,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jetty</artifactId>
 		</dependency>
+		
+		<dependency>  
+    <groupId>org.springframework.boot</groupId>  
+    <artifactId>spring-boot-configuration-processor</artifactId>  
+    <optional>true</optional>  
+</dependency>  
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -46,6 +53,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>2.2.5</version>
 		</dependency>
 
 		<dependency>
@@ -65,8 +77,50 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons.lang3.version}</version>
 		</dependency>
+		
+		
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-highlighter</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wltea.ik-analyzer</groupId>
+			<artifactId>ik-analyzer</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
 
-
+		
+		<dependency>
+			<groupId>com.aliyun.openservices</groupId>
+			<artifactId>ons-client</artifactId>
+			<version>1.2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
 	</dependencies>
 	<profiles>
 		<profile>
@@ -103,6 +157,7 @@
 				<includes>
 					<include>application.properties</include>
 					<include>application-${profileActive}.properties</include>
+					<include>source.properties</include>
 				</includes>
 			</resource>
 		</resources>
