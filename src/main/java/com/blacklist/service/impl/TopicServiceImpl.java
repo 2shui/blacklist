@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blacklist.config.WebConfig;
 import com.blacklist.domain.Topic;
@@ -54,5 +55,11 @@ public class TopicServiceImpl implements TopicService {
 	@Override
 	public Topic get(Long id) {
 		return topicRepo.findOne(id);
+	}
+
+	@Override
+	@Transactional
+	public void viewPage(Long id) {
+		topicRepo.addAccessNum(id);
 	}
 }

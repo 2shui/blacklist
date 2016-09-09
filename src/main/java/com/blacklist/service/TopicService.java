@@ -11,4 +11,6 @@ public interface TopicService {
 	public List<Topic> search(String[] field, String key, int num);
 	
 	public Topic get(Long id);
+	
+	public void viewPage(Long id);
 }

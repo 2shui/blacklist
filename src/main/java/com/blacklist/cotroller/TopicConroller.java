@@ -67,4 +67,13 @@ public class TopicConroller {
 		}
 		return BaseResponse.success(req.getTsno()).setResponse(topicService.get(id));
 	}
+	
+	@RequestMapping("/view")
+	public BaseResponse view(BaseRequest req, Long id) {
+		if (RequestValidator.nullValueValidator(id)) {
+			return BaseResponse.forbidden(req.getTsno(), "403");
+		}
+		topicService.viewPage(id);
+		return BaseResponse.success(req.getTsno());
+	}
 }

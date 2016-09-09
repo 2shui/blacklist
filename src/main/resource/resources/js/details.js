@@ -1,0 +1,1 @@
+var b=(function(){if(window.localStorage){if(isNaN(localStorage.a))localStorage.a=0;if(localStorage.a<new Date().getSeconds()){$.ajax({type:'POST',url:'/topic/view',data:{'id':getURLParameter('t')},success:function(data){if("100"==data.code){localStorage.a=new Date().getSeconds()+1024;}}});}}})();
