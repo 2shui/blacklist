@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+   <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>IT黑名单</title>
+      
+	  <link href="css/bootstrap.min.css" rel="stylesheet">
+	  
+	  <script src="js/jquery.min.js"></script>
+	  <script src="js/bootstrap.min.js"></script>
+	  <script src="js/angular.min.js"></script>
+   </head>
+   <body class=""><h1></h1>
+	<div class="jumbotron container">
+		<div class="form-group">
+			<a href="/"><h2><span class="col-sm-6 glyphicon glyphicon-home"></span></h2></a>
+			<span class="col-sm-6 text-right" id="sApp" ng-app="sApp" ng-controller="sCtrl">
+				<form class="form-inline">
+					<input type="text" ng-model="name" placeholder="公司名" class="form-control">
+					<button class="btn btn-default" ng-click="submit()" type="button">
+						Search!
+					</button>
+				</form>
+			</span>
+		</div>
+		<br/>
+		<div id="contentApp" ng-app="contentApp" ng-controller="contentCtrl">
+			<h3 class="">{{topic.sketch}}——{{topic.company}}</h3>
+			<div class="ng-binding" ng-bind-html="topic.intro|to_trusted"></div>
+		</div>
+	</div>
+	
+	<div class="container">
+	</div>
+	
+	<div class="container">
+		<div class="container text-center">
+			© Copyright 2016 IT黑名单 Inc.All Rights Reserved. <a href="http://www.miitbeian.gov.cn">豫ICP备15018592号-1</a>
+		</div>
+	</div>
+	
+	
+	<script>
+		var sApp = angular.module('sApp',[]);
+		sApp.controller('sCtrl', function($scope){
+			$scope.submit = function() {
+				window.location.href=encodeURI('/list.html?kw='+$scope.name);
+			}
+		});
+		var contentApp = angular.module('contentApp',[]);
+		contentApp.controller('contentCtrl', function($scope, $http){
+			$scope.t = getURLParameter('t');
+			$scope.topic = {};
+			$http({
+				method:'post',
+				url:'/topic/details',
+				data:{'tsno':new Date().getMilliseconds(),'id':$scope.t},
+				headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
+				transformRequest:function(data){return $.param(data);}
+			}).success(function(data){
+				console.log(data);
+				if("100"==data.code) {
+					$scope.topic = data.response;
+				}
+			});
+		}).filter(  
+			    'to_trusted', ['$sce', function ($sce) {  
+			        return function (text) {  
+			            return $sce.trustAsHtml(text);  
+			        }  
+			    }]  
+			)  ;
+		angular.bootstrap(document.getElementById("sApp"), ['sApp']);
+		angular.bootstrap(document.getElementById("contentApp"), ['contentApp']);
+		function getURLParameter(name) {
+			return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+		}
+	</script>
+</body>
+</html>

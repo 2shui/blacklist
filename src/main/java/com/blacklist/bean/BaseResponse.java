@@ -37,8 +37,7 @@ public class BaseResponse implements Serializable {
 	 * 服务器时间
 	 */
 	private String sysTime = "";
-
-
+	
 	public Object getResponse() {
 		return response;
 	}
@@ -76,6 +75,7 @@ public class BaseResponse implements Serializable {
 		BaseResponse baseResponse = new BaseResponse(seqNo);
 		baseResponse.setCode("100");
 		baseResponse.setDesc("操作成功");
+		baseResponse.setSysTime(""+System.currentTimeMillis());
 		return baseResponse;
 	}
 
@@ -83,6 +83,7 @@ public class BaseResponse implements Serializable {
 		BaseResponse baseResponse = new BaseResponse(seqNo);
 		baseResponse.setCode("500");
 		baseResponse.setDesc("操作失败");
+		baseResponse.setSysTime(""+System.currentTimeMillis());
 		return baseResponse;
 	}
 	
@@ -90,6 +91,7 @@ public class BaseResponse implements Serializable {
 		BaseResponse baseResponse = new BaseResponse(seqNo);
 		baseResponse.setCode("403");
 		baseResponse.setDesc(desc);
+		baseResponse.setSysTime(""+System.currentTimeMillis());
 		return baseResponse;
 	}
 

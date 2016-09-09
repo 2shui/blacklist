@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+   <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>IT黑名单</title>
+      
+	  <link href="css/bootstrap.min.css" rel="stylesheet">
+	  
+	  <script src="js/jquery.min.js"></script>
+	  <script src="js/bootstrap.min.js"></script>
+	  <script src="js/angular.min.js"></script>
+   </head>
+   <body class=""><h1></h1>
+	<div class="jumbotron container">
+		<div class="form-group">
+			<a href="/"><h2><span class="col-sm-6 glyphicon glyphicon-home"></span></h2></a>
+			<span class="col-sm-6 text-right" id="sApp" ng-app="sApp" ng-controller="sCtrl">
+				<form class="form-inline">
+					<input type="text" ng-model="name" placeholder="公司名" class="form-control">
+					<button class="btn btn-default" ng-click="submit()" type="button">
+						Search!
+					</button>
+				</form>
+			</span>
+		</div>
+		
+		<div id="myApp" ng-app="myApp" ng-controller="myCtrl">
+			<h3 class="text-center">关于{{kw}}的公司</h3>
+			<p class="" ng-repeat="r in list" style="text-indent:2em;">
+				<a href="javascript:void(0);" ng-click="details(r.ref)">
+					{{r.sketch}}——{{r.company}}
+				</a>
+			</p>
+		</div>
+	</div>
+	
+	<div class="container">
+		<div class="container text-center">
+			© Copyright 2016 IT黑名单 Inc.All Rights Reserved. <a href="http://www.miitbeian.gov.cn">豫ICP备15018592号-1</a>
+		</div>
+	</div>
+	
+	
+	<script>
+		var sApp = angular.module('sApp',[]);
+		sApp.controller('sCtrl', function($scope){
+			$scope.submit = function() {
+				window.location.href=encodeURI('/list.html?kw='+$scope.name);
+			}
+		});
+		var myApp = angular.module('myApp',[]);
+		myApp.controller('myCtrl', function($scope, $http) {
+			$scope.details = function(i) {
+				window.location.href=encodeURI('details.html?t='+i);
+			}
+			
+			$scope.kw = getURLParameter('kw');
+			$scope.list = [];
+			$http({
+				method:'post',
+				url:'/topic/s',
+				data:{'tsno':new Date().getMilliseconds(),'key':$scope.kw},
+				headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
+				transformRequest:function(data){return $.param(data);}
+			}).success(function(data){
+				console.log(data);
+				if("100"==data.code) {
+					var res = data.response;
+					for(var i=0;i<res.length;i++) {
+						var topic = {};
+						topic.ref = res[i].id;
+						topic.sketch = res[i].sketch;
+						topic.company = res[i].company;
+						$scope.list[i] = topic;
+					}
+				}
+			});
+		});
+		
+		function getURLParameter(name) {
+			return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+		}
+		angular.bootstrap(document.getElementById("sApp"), ['sApp']);
+		angular.bootstrap(document.getElementById("myApp"), ['myApp']);
+	</script>
+</body>
+</html>

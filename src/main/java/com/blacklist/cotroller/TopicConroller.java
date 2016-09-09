@@ -1,13 +1,16 @@
 package com.blacklist.cotroller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blacklist.bean.BaseRequest;
 import com.blacklist.bean.BaseResponse;
+import com.blacklist.config.WebConfig;
 import com.blacklist.domain.Topic;
 import com.blacklist.domain.enums.TopicEnum;
 import com.blacklist.service.TopicService;
@@ -22,7 +25,8 @@ import com.blacklist.utils.RequestValidator;
 @RestController
 @RequestMapping("/topic")
 public class TopicConroller {
-	@Autowired TopicService topicService;
+	@Autowired
+	TopicService topicService;
 	
 	/**
 	 * @param req
@@ -35,14 +39,32 @@ public class TopicConroller {
 			return BaseResponse.forbidden(req.getTsno(), "非法请求");
 		}
 		if(RequestValidator.nullValueValidator(topic.getCity(), topic.getCompany(), topic.getSketch(), topic.getIntro(), topic.getContact())){
-			BaseResponse.forbidden(req.getTsno(), "必填参数不完整");
+			return BaseResponse.forbidden(req.getTsno(), "必填参数不完整");
 		}
 		topic.setCreateTime(new Date());
 		topic.setStatus(TopicEnum.Status.NORMAL.getValue());
+		topic.setAccessNum(0);
+		topic.setEulogyNum(0);
+		topic.setRefuteNum(0);
 		topicService.add(topic);
 		
 		return BaseResponse.success(req.getTsno());
 	}
 	
+	@RequestMapping("/s")
+	public BaseResponse search(BaseRequest req, String key) {
+		if(RequestValidator.nullValueValidator(key)) {
+			return BaseResponse.forbidden(req.getTsno(), "查询数据为空");
+		}
+		List<Topic> list = topicService.search(new String[]{WebConfig.id, WebConfig.city, WebConfig.company}, key, 10);
+		return BaseResponse.success(req.getTsno()).setResponse(list);
+	}
 	
+	@RequestMapping("/details")
+	public BaseResponse details(BaseRequest req, Long id) {
+		if (RequestValidator.nullValueValidator(id)) {
+			return BaseResponse.forbidden(req.getTsno(), "无效的页面");
+		}
+		return BaseResponse.success(req.getTsno()).setResponse(topicService.get(id));
+	}
 }

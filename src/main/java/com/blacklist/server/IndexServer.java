@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.blacklist.config.WebConfig;
@@ -27,6 +26,11 @@ public class IndexServer {
 					TextField.TYPE_STORED);
 			cityField.setBoost(WebConfig.cityPoint);
 			doc.add(cityField);
+			Field sketchField = new Field(WebConfig.sketch, topic.getSketch(), TextField.TYPE_STORED);
+			sketchField.setBoost(WebConfig.sketchPoint);
+			doc.add(sketchField);
+			Field idField = new Field(WebConfig.id, String.valueOf(topic.getId()), TextField.TYPE_STORED);
+			doc.add(idField);
 			list.add(doc);
 		});
 		return list;

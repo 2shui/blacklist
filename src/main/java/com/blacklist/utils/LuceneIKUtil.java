@@ -3,6 +3,7 @@ package com.blacklist.utils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -107,7 +108,7 @@ public class LuceneIKUtil {
 		TopDocs docs = searcher.search(query, num);
 		if(docs.totalHits < 1) {
 			indexReader.close();
-			return null;
+			return Arrays.asList();
 		}
 		List<Document> result = new ArrayList<Document>();
 		ScoreDoc[] hits = docs.scoreDocs;

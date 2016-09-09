@@ -11,8 +11,11 @@ public class WebConfig {
 	public static String path;// index path
 	public static String company;// index 公司名
 	public static String city;// index city
+	public static String id;
+	public static String sketch;
 	public static float companyPoint;
 	public static float cityPoint;
+	public static float sketchPoint;
 
 	public String getPath() {
 		return path;
@@ -52,6 +55,30 @@ public class WebConfig {
 
 	public void setCityPoint(float cityPoint) {
 		this.cityPoint = cityPoint;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public String getSketch() {
+		return sketch;
+	}
+
+	public void setSketch(String sketch) {
+		this.sketch = sketch;
+	}
+
+	public float getSketchPoint() {
+		return sketchPoint;
+	}
+
+	public void setSketchPoint(float sketchPoint) {
+		WebConfig.sketchPoint = sketchPoint;
 	}
 	
 }

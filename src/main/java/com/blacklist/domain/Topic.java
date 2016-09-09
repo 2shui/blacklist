@@ -68,6 +68,16 @@ public class Topic implements Serializable {
      * 浏览数
      */
     private Integer accessNum;
+    
+    /**
+     * 点赞数
+     */
+    private Integer eulogyNum;
+    
+    /**
+     * 驳斥数
+     */
+    private Integer refuteNum;
 
 
     @Id
@@ -108,7 +118,7 @@ public class Topic implements Serializable {
 		this.company = company;
 	}
 
-	@Column(name = "createTime")
+	@Column(name = "create_time")
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -151,6 +161,24 @@ public class Topic implements Serializable {
 
 	public void setAccessNum(Integer accessNum) {
 		this.accessNum = accessNum;
+	}
+
+	@Column(name = "eulogyNum")
+	public Integer getEulogyNum() {
+		return eulogyNum;
+	}
+
+	public void setEulogyNum(Integer eulogyNum) {
+		this.eulogyNum = eulogyNum;
+	}
+
+	@Column(name = "refuteNum")
+	public Integer getRefuteNum() {
+		return refuteNum;
+	}
+
+	public void setRefuteNum(Integer refuteNum) {
+		this.refuteNum = refuteNum;
 	}
 
 }

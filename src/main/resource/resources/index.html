@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+   <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>IT黑名单</title>
+      
+	  <link href="css/bootstrap.min.css" rel="stylesheet">
+	  <link rel="stylesheet" type="text/css" href="css/bootstrap-select.css">
+	  <link rel="stylesheet" type="text/css" href="css/bootstrap-markdown.min.css">
+	  
+	  <script src="js/jquery.min.js"></script>
+	  <script src="js/bootstrap.min.js"></script>
+	  <script src="js/bootstrap-select.js"></script>
+	  <script src="js/markdown.js"></script>
+	  <script src="js/bootstrap-markdown.js"></script>
+	  <script src="js/to-markdown.js"></script>
+	  <script src="js/city.js"></script>
+	  <script src="js/angular.min.js"></script>
+	  
+	  <script type="text/javascript">
+	$(window).on('load', function () {
+		$('.selectpicker').selectpicker({'selectedText': 'cat'});
+    });
+  </script>
+   </head>
+   <body class="">
+	<div class="jumbotron container text-center"><h1></h1>
+		<h2>Bad luck, U come here.</h2>
+		<div class="row center-block">
+			<div class="row col-lg-4 col-lg-offset-4">
+				<div class="navbar-text">
+					<div class="input-group" id="searchApp" ng-app="searchApp" ng-controller="searchCtrl">
+					   <input type="text" ng-model="name" placeholder="公司名" class="col-lg-4 form-control">
+					   <span class="input-group-btn">
+						  <button class="btn btn-default" type="button" ng-click="submit()">
+							 Search!
+						  </button>
+					   </span>
+					</div><!-- /input-group -->
+				</div>
+			</div><!-- /.row -->
+		</div>
+		<br/>
+		<a href="#" data-toggle="modal" data-target="#myModal">我要爆料</a>
+		<div class="container text-center">
+			© Copyright 2016 IT黑名单 Inc.All Rights Reserved. <a href="http://www.miitbeian.gov.cn">豫ICP备15018592号-1</a>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="myApp" ng-app="myApp" ng-controller="myCtrl">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times; </button>
+				<h4 class="modal-title" >
+				  填写资料
+				</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">所在城市</label>
+						<div class="col-sm-8">
+							<select class="selectpicker bla bla bli" multiple data-live-search="true" required>
+								<option ng-repeat="city in citys">{{city}}</option>
+							</select>*
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">公司名称</label>
+						<div class="col-sm-8">
+							<input type="text" ng-model="company" name="company" placeholder="公司全名" required>*
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">类型</label>
+						<div class="col-sm-8">
+							<input type="text" ng-model="sketch" name="sketch" placeholder="类型" required>*
+							<span class="help-block">Example:拖欠工资/推延离职...</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">详细描述</label>
+						<div class="col-sm-8">
+							<textarea class="bt-md" ng-model="content" name="content" data-provide="markdown" rows="10"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">联系方式</label>
+						<div class="col-sm-8">
+							<input type="text" ng-model="contact" name="contact" placeholder="email/qq/tel...">
+							<span class="help-block">不会在网站展示，仅供进一步确认问题，选填</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label"><input type="checkbox" checked disabled="disabled" /></label>
+						<div class="col-sm-8">
+							<span class="help-block">以上内容均系用户个人行为，不代表本网站意见，本站不为以上内容承担任何法律责任。</span>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="submit" ng-click="submit()" class="btn btn-primary">提交</button>
+			</div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+	
+	<script>
+	var myApp = angular.module('myApp',[]);
+	myApp.controller('myCtrl', function($scope, $http) {
+		$scope.citys = citys;
+		$scope.submit = function() {
+			var message = $('.bt-md').data('markdown').parseContent();
+			$http({
+				method:'post',
+				url:'/topic/add',
+				data:{'tsno':new Date().getMilliseconds(),'city':t,'company':$scope.company,
+						'sketch':$scope.sketch,'intro':message,'contact':$scope.contact},
+				headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
+				transformRequest:function(data){return $.param(data);}
+			}).success(function(data){
+				if("100"==data.code) {
+					$("#myModal").modal('hide');
+				}
+			});
+		}
+	});
+	var searchApp = angular.module('searchApp',[]);
+	searchApp.controller('searchCtrl', function($scope) {
+		$scope.submit = function() {
+			window.location.href=encodeURI('/list.html?kw='+$scope.name);
+		}
+	});
+	angular.bootstrap(document.getElementById("searchApp"), ['searchApp']);
+	angular.bootstrap(document.getElementById("myApp"), ['myApp']);
+	</script>
+</body>
+</html>

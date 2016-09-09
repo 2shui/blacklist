@@ -144,7 +144,7 @@
 		<resources>
 			<resource>
 				<directory>src/main/resource</directory>
-				<filtering>true</filtering>
+				<filtering>false</filtering>
 				<excludes>
 					<exclude>application.properties</exclude>
 					<exclude>application-dev.properties</exclude>
@@ -153,11 +153,12 @@
 			</resource>
 			<resource>
 				<directory>src/main/resource</directory>
-				<filtering>true</filtering>
+				<filtering>false</filtering>
 				<includes>
 					<include>application.properties</include>
 					<include>application-${profileActive}.properties</include>
 					<include>source.properties</include>
+					<include>resources/*</include>
 				</includes>
 			</resource>
 		</resources>
