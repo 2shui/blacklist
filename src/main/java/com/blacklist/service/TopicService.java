@@ -3,6 +3,7 @@ package com.blacklist.service;
 import java.util.List;
 
 import com.blacklist.domain.Topic;
+import com.blacklist.domain.TopicReply;
 
 public interface TopicService {
 	
@@ -13,4 +14,7 @@ public interface TopicService {
 	public Topic get(Long id);
 	
 	public void viewPage(Long id);
+	
+	public List<Topic> getAll();
+	
 }

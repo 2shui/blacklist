@@ -62,4 +62,9 @@ public class TopicServiceImpl implements TopicService {
 	public void viewPage(Long id) {
 		topicRepo.addAccessNum(id);
 	}
+
+	@Override
+	public List<Topic> getAll() {
+		return topicRepo.findAll();
+	}
 }

@@ -14,9 +14,9 @@ import javax.persistence.Table;
 /**
  * 主题
  *
- * @author 12465
+ * @author 
  * @version 1.0
- * @createDate 2016/7/18 14:04
+ * @createDate 2016-9-09 14:12:35
  */
 @Entity
 @Table(name = "it_topic")

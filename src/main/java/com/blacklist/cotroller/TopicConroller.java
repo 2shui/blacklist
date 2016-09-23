@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +11,10 @@ import com.blacklist.bean.BaseRequest;
 import com.blacklist.bean.BaseResponse;
 import com.blacklist.config.WebConfig;
 import com.blacklist.domain.Topic;
+import com.blacklist.domain.TopicReply;
 import com.blacklist.domain.enums.TopicEnum;
+import com.blacklist.domain.enums.TopicReplyEnum;
+import com.blacklist.service.TopicReplyService;
 import com.blacklist.service.TopicService;
 import com.blacklist.utils.RequestValidator;
 
@@ -27,6 +29,8 @@ import com.blacklist.utils.RequestValidator;
 public class TopicConroller {
 	@Autowired
 	TopicService topicService;
+	@Autowired
+	TopicReplyService topicReplyService;
 	
 	/**
 	 * @param req
@@ -75,5 +79,29 @@ public class TopicConroller {
 		}
 		topicService.viewPage(id);
 		return BaseResponse.success(req.getTsno());
+	}
+	
+	@RequestMapping("/reply")
+	public BaseResponse reply(BaseRequest req, TopicReply reply) {
+		if (RequestValidator.nullValueValidator(reply.getTopicId(), reply.getIp(), reply.getCitySN(), reply.getIntro())) {
+			return BaseResponse.forbidden(req.getTsno(), "403");
+		}
+		if (null == topicService.get(reply.getTopicId())) {
+			return BaseResponse.forbidden(req.getTsno(), "bad topic");
+		}
+		reply.setStatus(TopicReplyEnum.Status.NORMAL.getValue());
+		reply.setTime(new Date());
+		reply.setUpNum(0);
+		reply.setDownNum(0);
+		topicReplyService.addReply(reply);
+		return BaseResponse.success(req.getTsno());
+	}
+	
+	@RequestMapping("/comments")
+	public BaseResponse comments(BaseRequest req, Long id) {
+		if (RequestValidator.nullValueValidator(id)) {
+			return BaseResponse.forbidden(req.getTsno(), "403");
+		}
+		return BaseResponse.success(req.getTsno()).setResponse(topicReplyService.getReplys(id));
 	}
 }

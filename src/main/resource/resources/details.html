@@ -5,10 +5,24 @@
       <title>IT黑名单</title>
       
 	  <link href="css/bootstrap.min.css" rel="stylesheet">
+	  <link rel="stylesheet" type="text/css" href="css/bootstrap-select.css">
+	  <link rel="stylesheet" type="text/css" href="css/bootstrap-markdown.min.css">
 	  
 	  <script src="js/jquery.min.js"></script>
 	  <script src="js/bootstrap.min.js"></script>
+	  <script src="js/bootstrap-select.js"></script>
+	  <script src="js/markdown.js"></script>
+	  <script src="js/bootstrap-markdown.js"></script>
+	  <script src="js/to-markdown.js"></script>
+	  <script src="js/city.js"></script>
 	  <script src="js/angular.min.js"></script>
+	  <script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+	  <!-- var returnCitySN = {"cip": "183.6.154.130", "cid": "440100", "cname": "广东省广州市"}; -->
+	  <script type="text/javascript">
+	$(window).on('load', function () {
+		$('.selectpicker').selectpicker({'selectedText': 'cat'});
+    });
+  </script>
    </head>
    <body class=""><h1></h1>
 	<div class="jumbotron container">
@@ -31,6 +45,27 @@
 	</div>
 	
 	<div class="container">
+	</div>
+	<div id="commentApp" ng-app="commentApp" ng-controller="commentCtrl" class="jumbotron container">
+		<table class="table table-striped">
+			<tr ng-repeat="r in list"><td>
+				<code>{{r.citySN}}网友--{{r.time|date:'yyyy-MM-dd HH:mm:ss'}}</code><br/>
+				<div class="ng-binding" ng-bind-html="r.intro|to_trusted"></div>
+				
+				<span style="cursor:pointer;" ng-click="up(r.id)" class="glyphicon glyphicon-thumbs-up"></span>({{r.upNum}})
+				<span style="cursor:pointer;" ng-click="down(r.id)" class="glyphicon glyphicon-thumbs-down"></span>({{r.downNum}})
+			</td></tr>
+		</table>
+		<textarea class="bt-md" data-provide="markdown" rows="10"></textarea>
+		<button type="button" ng-click="submit()" class="btn btn-primary">提交</button>
+	</div>
+	
+	<div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			 <div class="modal-content">
+				<div class="modal-body">success!</div>
+			</div>
+		</div>
 	</div>
 	
 	<div class="container">
@@ -70,8 +105,64 @@
 			        }  
 			    }]  
 			)  ;
+		var commentApp = angular.module('commentApp',[]);
+		commentApp.controller('commentCtrl',function($scope, $http){
+			$scope.t = getURLParameter('t');
+			$scope.list = [];
+			$http({
+				method:'post',
+				url:'/topic/comments',
+				data:{'tsno':new Date().getMilliseconds(),'id':$scope.t},
+				headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
+				transformRequest:function(data){return $.param(data);}
+			}).success(function(data){
+				if("100"==data.code) {
+					var res = data.response;
+					for(var i=0;i<res.length;i++) {
+						var comment = {};
+						comment.id = res[i].id;
+						comment.citySN = res[i].citySN;
+						comment.time = res[i].time;
+						comment.intro = res[i].intro;
+						comment.upNum = res[i].upNum;
+						comment.downNum = res[i].downNum;
+						$scope.list[i] = comment;
+					}
+				}
+			});
+			$scope.submit = function(){
+				var message = $('.bt-md').data('markdown').parseContent();
+				$http({
+					method:'post',
+					url:'/topic/reply',
+					data:{'tsno':new Date().getMilliseconds(),'topicId':$scope.t,'ip':returnCitySN.cip,
+							'citySN':returnCitySN.cname,'intro':message},
+					headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
+					transformRequest:function(data){return $.param(data);}
+				}).success(function(data){
+					console.log(data);
+					if("100"==data.code) {
+						$("#msgModal").modal();
+					} else {
+					}
+				});
+			}
+			$scope.up = function(t) {
+				console.log('up'+t);
+			}
+			$scope.down = function(t) {
+				console.log('down'+t);
+			}
+		}).filter(
+			'to_trusted', ['$sce', function ($sce) {
+				return function(text){
+					return $sce.trustAsHtml(text);
+				}
+			}]
+		);
 		angular.bootstrap(document.getElementById("sApp"), ['sApp']);
 		angular.bootstrap(document.getElementById("contentApp"), ['contentApp']);
+		angular.bootstrap(document.getElementById("commentApp"), ['commentApp']);
 		function getURLParameter(name) {
 			return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 		}

@@ -49,6 +49,13 @@
 		</div>
 	</div>
 	
+	<div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			 <div class="modal-content">
+				<div class="modal-body">success!</div>
+			</div>
+		</div>
+	</div>
 	
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
@@ -135,6 +142,10 @@
 				}).success(function(data){
 					if("100"==data.code) {
 						$("#myModal").modal('hide');
+						$("#msgModal").modal();
+					} else {
+						$("#msgModal .modal-body").html(data.desc);
+						$("#msgModal").modal();
 					}
 				});
 			}
