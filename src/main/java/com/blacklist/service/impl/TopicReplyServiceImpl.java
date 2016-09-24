@@ -27,5 +27,20 @@ public class TopicReplyServiceImpl implements TopicReplyService {
 	public TopicReply addReply(TopicReply reply) {
 		return replyRepo.saveAndFlush(reply);
 	}
+
+	@Override
+	public TopicReply get(Long id) {
+		return replyRepo.findOne(id);
+	}
+
+	@Override
+	public int up(Long id) {
+		return replyRepo.up(id);
+	}
+
+	@Override
+	public int down(Long id) {
+		return replyRepo.down(id);
+	}
 	
 }
