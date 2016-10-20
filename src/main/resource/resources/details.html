@@ -73,7 +73,11 @@
 			© Copyright 2016 IT黑名单 Inc.All Rights Reserved. <a href="http://www.miitbeian.gov.cn">豫ICP备15018592号-1</a>
 		</div>
 	</div>
-	
+	<script>
+	function getURLParameter(name) {
+		return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+	}
+	</script>
 	<script src="js/details.js"></script>
 	<script>
 		var sApp = angular.module('sApp',[]);
@@ -148,12 +152,22 @@
 				});
 			}
 			$scope.up = function(t) {
-				console.log('up'+t);
 				up(t);
+				for(var i=0;i<$scope.list.length;i++){
+					if(t==$scope.list[i].id) {
+						$scope.list[i].upNum += 1;
+						break;
+					}
+				}
 			}
 			$scope.down = function(t) {
-				console.log('down'+t);
 				down(t);
+				for(var i=0;i<$scope.list.length;i++){
+					if(t==$scope.list[i].id) {
+						$scope.list[i].downNum += 1;
+						break;
+					}
+				}
 			}
 		}).filter(
 			'to_trusted', ['$sce', function ($sce) {
@@ -165,9 +179,6 @@
 		angular.bootstrap(document.getElementById("sApp"), ['sApp']);
 		angular.bootstrap(document.getElementById("contentApp"), ['contentApp']);
 		angular.bootstrap(document.getElementById("commentApp"), ['commentApp']);
-		function getURLParameter(name) {
-			return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
-		}
 	</script>
 </body>
 </html>

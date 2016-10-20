@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.blacklist.domain.TopicReply;
@@ -16,9 +17,9 @@ public interface TopicReplyRepo extends JpaRepository<TopicReply, Long> {
 	
 	@Modifying
 	@Query(value = "update it_topic_reply t set t.up_num = t.up_num+1 where t.id=:id", nativeQuery = true)
-	public int up(Long id);
+	public int up(@Param("id")Long id);
 	
 	@Modifying
 	@Query(value = "update it_topic_reply t set t.down_num = t.down_num+1 where t.id=:id", nativeQuery = true)
-	public int down(Long id);
+	public int down(@Param("id")Long id);
 }

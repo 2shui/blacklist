@@ -28,7 +28,7 @@ public class ReplyConroller {
 	 */
 	@RequestMapping("/up")
 	public BaseResponse up(BaseRequest req, Long id) {
-		if(!RequestValidator.nullValueValidator(id)) {
+		if(RequestValidator.nullValueValidator(id)) {
 			return BaseResponse.forbidden(req.getTsno(), "参数不完整");
 		}
 		if(null==topicReplyService.get(id)) {
@@ -40,7 +40,7 @@ public class ReplyConroller {
 	
 	@RequestMapping("/down")
 	public BaseResponse down(BaseRequest req, Long id) {
-		if(!RequestValidator.nullValueValidator(id)) {
+		if(RequestValidator.nullValueValidator(id)) {
 			return BaseResponse.forbidden(req.getTsno(), "参数不完整");
 		}
 		if(null==topicReplyService.get(id)) {

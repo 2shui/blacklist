@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blacklist.domain.TopicReply;
 import com.blacklist.domain.enums.TopicReplyEnum;
@@ -34,11 +35,13 @@ public class TopicReplyServiceImpl implements TopicReplyService {
 	}
 
 	@Override
+	@Transactional
 	public int up(Long id) {
 		return replyRepo.up(id);
 	}
 
 	@Override
+	@Transactional
 	public int down(Long id) {
 		return replyRepo.down(id);
 	}
