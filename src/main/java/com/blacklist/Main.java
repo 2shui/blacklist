@@ -7,16 +7,17 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.blacklist.config.WebConfig;
-import com.blacklist.utils.SMSConsumer;
+import com.blacklist.interceptor.ReferrerInterceptor;
 
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
 @EnableTransactionManagement
 @EnableConfigurationProperties({WebConfig.class})
-public class Main {
+public class Main extends WebMvcConfigurerAdapter{
 	/**
 	 * <p>
 	 * 方法描述: 启动器
@@ -37,6 +38,7 @@ public class Main {
 	}
 	
 	public void addInterceptors(InterceptorRegistry registry) {
-//    	registry.addInterceptor(new ProxyInterceptor()).addPathPatterns("/**/**");
+		registry.addInterceptor(new ReferrerInterceptor()).addPathPatterns(
+				"/topic/add", "/topic/view", "/topic/reply", "/reply/up", "/reply/down");
     }
 }

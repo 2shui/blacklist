@@ -7,18 +7,18 @@
 	  <meta name="description" content="爆料黑公司，后来人谨慎入坑。IT黑名单，BLACKLIST.CN" />
       
       <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
-	  <link href="css/bootstrap.min.css" rel="stylesheet">
-	  <link rel="stylesheet" type="text/css" href="css/bootstrap-select.css">
-	  <link rel="stylesheet" type="text/css" href="css/bootstrap-markdown.min.css">
+	  <link href="/css/bootstrap.min.css" rel="stylesheet">
+	  <link rel="stylesheet" type="text/css" href="/css/bootstrap-select.css">
+	  <link rel="stylesheet" type="text/css" href="/css/bootstrap-markdown.min.css">
 	  
-	  <script src="js/jquery.min.js"></script>
-	  <script src="js/bootstrap.min.js"></script>
-	  <script src="js/bootstrap-select.js"></script>
-	  <script src="js/markdown.js"></script>
-	  <script src="js/bootstrap-markdown.js"></script>
-	  <script src="js/to-markdown.js"></script>
-	  <script src="js/city.js"></script>
-	  <script src="js/angular.min.js"></script>
+	  <script src="/js/jquery.min.js"></script>
+	  <script src="/js/bootstrap.min.js"></script>
+	  <script src="/js/bootstrap-select.js"></script>
+	  <script src="/js/markdown.js"></script>
+	  <script src="/js/bootstrap-markdown.js"></script>
+	  <script src="/js/to-markdown.js"></script>
+	  <script src="/js/city.js"></script>
+	  <script src="/js/angular.min.js"></script>
 	  <script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 	  <!-- var returnCitySN = {"cip": "183.6.154.130", "cid": "440100", "cname": "广东省广州市"}; -->
 	  <script type="text/javascript">
@@ -26,7 +26,7 @@
 		$('.selectpicker').selectpicker({'selectedText': 'cat'});
     });
   </script>
-  <script src="js/baidutj.js"></script>
+  <script src="/js/baidutj.js"></script>
    </head>
    <body class=""><h1></h1>
 	<div class="jumbotron container">
@@ -79,15 +79,16 @@
 	</div>
 	<script>
 	function getURLParameter(name) {
-		return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+		return new RegExp('\\d+').exec(window.location.pathname)[0];
+		//return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 	}
 	</script>
-	<script src="js/details.js"></script>
+	<script src="/js/details.js"></script>
 	<script>
 		var sApp = angular.module('sApp',[]);
 		sApp.controller('sCtrl', function($scope){
 			$scope.submit = function() {
-				window.location.href=encodeURI('/list.html?kw='+$scope.name);
+				window.location.href=encodeURI('/s?wd='+$scope.name);
 			}
 		});
 		var contentApp = angular.module('contentApp',[]);

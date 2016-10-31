@@ -8,17 +8,17 @@
 
 	  <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 	  <link href="css/bootstrap.min.css" rel="stylesheet">
-	  <link rel="stylesheet" type="text/css" href="css/bootstrap-select.css">
-	  <link rel="stylesheet" type="text/css" href="css/bootstrap-markdown.min.css">
+	  <link rel="stylesheet" type="text/css" href="/css/bootstrap-select.css">
+	  <link rel="stylesheet" type="text/css" href="/css/bootstrap-markdown.min.css">
 	  
-	  <script src="js/jquery.min.js"></script>
-	  <script src="js/bootstrap.min.js"></script>
-	  <script src="js/bootstrap-select.js"></script>
-	  <script src="js/markdown.js"></script>
-	  <script src="js/bootstrap-markdown.js"></script>
-	  <script src="js/to-markdown.js"></script>
-	  <script src="js/city.js"></script>
-	  <script src="js/angular.min.js"></script>
+	  <script src="/js/jquery.min.js"></script>
+	  <script src="/js/bootstrap.min.js"></script>
+	  <script src="/js/bootstrap-select.js"></script>
+	  <script src="/js/markdown.js"></script>
+	  <script src="/js/bootstrap-markdown.js"></script>
+	  <script src="/js/to-markdown.js"></script>
+	  <script src="/js/city.js"></script>
+	  <script src="/js/angular.min.js"></script>
 	  
 	  <script type="text/javascript">
 	$(window).on('load', function () {
@@ -46,6 +46,8 @@
 		</div>
 		<br/>
 		<a href="#" data-toggle="modal" data-target="#myModal">我要爆料</a>
+		<br/>
+		<iframe src="http://tucao.itblacklist.cn/?master=1"></iframe>
 		<div class="container text-center">
 			© Copyright 2016 IT黑名单 Inc.All Rights Reserved. <a href="http://www.miitbeian.gov.cn">豫ICP备15018592号-2</a>
 		</div>
@@ -147,7 +149,7 @@
 	var searchApp = angular.module('searchApp',[]);
 	searchApp.controller('searchCtrl', function($scope) {
 		$scope.submit = function() {
-			window.location.href=encodeURI('/list.html?kw='+$scope.name);
+			window.location.href=encodeURI('/s?wd='+$scope.name);
 		}
 	});
 	angular.bootstrap(document.getElementById("searchApp"), ['searchApp']);

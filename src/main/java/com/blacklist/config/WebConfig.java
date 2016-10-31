@@ -16,6 +16,7 @@ public class WebConfig {
 	public static float companyPoint;
 	public static float cityPoint;
 	public static float sketchPoint;
+	public static String site;
 
 	public String getPath() {
 		return path;
@@ -79,6 +80,14 @@ public class WebConfig {
 
 	public void setSketchPoint(float sketchPoint) {
 		WebConfig.sketchPoint = sketchPoint;
+	}
+
+	public static String getSite() {
+		return site;
+	}
+
+	public static void setSite(String site) {
+		WebConfig.site = site;
 	}
 	
 }
