@@ -149,7 +149,9 @@
 	var searchApp = angular.module('searchApp',[]);
 	searchApp.controller('searchCtrl', function($scope) {
 		$scope.submit = function() {
-			window.location.href=encodeURI('/s?wd='+$scope.name);
+			if(typeof($scope.name) != "undefined") {
+				window.location.href=encodeURI('/s?wd='+$scope.name);
+			}
 		}
 	});
 	angular.bootstrap(document.getElementById("searchApp"), ['searchApp']);

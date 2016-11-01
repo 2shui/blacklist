@@ -157,7 +157,9 @@
 		var sApp = angular.module('sApp',[]);
 		sApp.controller('sCtrl', function($scope){
 			$scope.submit = function() {
-				window.location.href=encodeURI('/s?wd='+$scope.name);
+				if(typeof($scope.name) != "undefined") {
+					window.location.href=encodeURI('/s?wd='+$scope.name);
+				}
 			}
 		});
 		var lApp = angular.module('lApp',[]);

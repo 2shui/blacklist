@@ -38,14 +38,17 @@ public class AdminConroller {
 	@RequestMapping("/fullIndex")
 	public BaseResponse fullIndex(BaseRequest req, HttpServletRequest request) {
 		String clientIp = getIpAddr(request);
-		if("127.0.0.1".equals(clientIp) || "localhost".equals(clientIp) || "0:0:0:0:0:0:0:1".equals(clientIp)) {
+		if ("127.0.0.1".equals(clientIp) || "localhost".equals(clientIp)
+				|| "0:0:0:0:0:0:0:1".equals(clientIp) || "120.24.186.80".equals(clientIp)) {
 			try {
-				LuceneIKUtil.getInstance().createIndex(indexServer.build(topicService.getAll()), true);
+				LuceneIKUtil.getInstance().createIndex(
+						indexServer.build(topicService.getAll()), true);
+				log.info("fullIndex success...");
 			} catch (Exception e) {
 				log.error("rebuild index error:{}", e);
 			}
 		}
-		return BaseResponse.success(getIpAddr(request));
+		return BaseResponse.success(clientIp);
 	}
 	
 	private String getIpAddr(HttpServletRequest request) {

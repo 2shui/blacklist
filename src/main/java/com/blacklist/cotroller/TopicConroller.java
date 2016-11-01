@@ -61,6 +61,9 @@ public class TopicConroller {
 			return BaseResponse.forbidden(req.getTsno(), "查询数据为空");
 		}
 		List<Topic> list = topicService.search(new String[]{WebConfig.id, WebConfig.city, WebConfig.company}, key, 10);
+		if(list.size()<1) {
+			
+		}
 		return BaseResponse.success(req.getTsno()).setResponse(list);
 	}
 	
