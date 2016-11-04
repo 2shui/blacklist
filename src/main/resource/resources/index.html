@@ -3,8 +3,8 @@
    <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <title>IT黑名单</title>
-      <meta name="keywords" content="黑名单,名单,黑公司,公司,IT黑公司,IT公司,职场黑公司" />
-	  <meta name="description" content="爆料黑公司，后来人谨慎入坑。IT黑名单，BLACKLIST.CN" />
+      <meta name="keywords" content="IT黑名单,黑名单,名单,黑公司,黑企业,IT黑公司,IT公司,职场黑公司" />
+	  <meta name="description" content="前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
 
 	  <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 	  <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -44,11 +44,12 @@
 				</div>
 			</div><!-- /.row -->
 		</div>
-		<br/>
-		<a href="#" data-toggle="modal" data-target="#myModal">我要爆料</a>|
-		<a href="/question.html">常见问题</a>
-		<br/>
 		<iframe src="http://tucao.itblacklist.cn/?master=1"></iframe>
+		<br/>
+		<a href="#" data-toggle="modal" data-target="#myModal">我要爆料</a> | 
+		<a href="/question.html">常见问题</a> | 
+		<a href="JavaScript:void(0);" data-toggle="modal" data-target="#feedbackModal">反馈</a>
+		<br/>
 		<div class="container text-center">
 			© Copyright 2016 IT黑名单 Inc.All Rights Reserved. <a href="http://www.miitbeian.gov.cn">豫ICP备15018592号-2</a>
 		</div>
@@ -61,6 +62,40 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="feedbackApp" ng-app="feedbackApp" ng-controller="feedbackCtrl">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times; </button>
+				<h4 class="modal-title" >
+				  填写资料
+				</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">详细描述</label>
+						<div class="col-sm-8">
+							<textarea class="feedback-ta" ng-model="content" name="content" data-provide="markdown" rows="10"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">联系方式</label>
+						<div class="col-sm-8">
+							<input type="text" ng-model="contact" name="contact" placeholder="email/qq/tel...">
+							<span class="help-block">方便我们进一步联系您，选填</span>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="submit" ng-click="submit()" class="btn btn-primary">提交</button>
+			</div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 	
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
@@ -132,13 +167,13 @@
 			$http({
 				method:'post',
 				url:'/topic/add',
-				data:{'tsno':new Date().getMilliseconds(),'city':t,'company':$scope.company,
+				data:{'tsno':new Date().getTime(),'city':t,'company':$scope.company,
 						'sketch':$scope.sketch,'intro':message,'contact':$scope.contact},
 				headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
 				transformRequest:function(data){return $.param(data);}
 			}).success(function(data){
 				if("100"==data.code) {
-					$("#myModal").modal('hide');
+					$("#feedbackModal").modal('hide');
 					$("#msgModal").modal();
 				} else {
 					$("#msgModal .modal-body").html(data.desc);
@@ -155,8 +190,30 @@
 			}
 		}
 	});
+	var feedbackApp = angular.module('feedbackApp',[]);
+	feedbackApp.controller('feedbackCtrl', function($scope, $http) {
+		$scope.submit = function() {
+			var message = $('.feedback-ta').data('markdown').parseContent();
+			$http({
+				method:'post',
+				url:'/feedback/add',
+				data:{'tsno':new Date().getTime(),'content':message,'contact':$scope.contact},
+				headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
+				transformRequest:function(data){return $.param(data);}
+			}).success(function(data){
+				var msg = data.desc;
+				if("100"==data.code) {
+					msg = 'success!';
+				}
+				$("#feedbackModal").modal('hide');
+				$("#msgModal .modal-body").html(msg);
+				$("#msgModal").modal();
+			});
+		}
+	});
 	angular.bootstrap(document.getElementById("searchApp"), ['searchApp']);
 	angular.bootstrap(document.getElementById("myApp"), ['myApp']);
+	angular.bootstrap(document.getElementById("feedbackApp"), ['feedbackApp']);
 	</script>
 </body>
 </html>

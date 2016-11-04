@@ -3,8 +3,8 @@
    <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <title>IT黑名单</title>
-      <meta name="keywords" content="黑名单,名单,黑公司,公司,IT黑公司,IT公司,职场黑公司" />
-	  <meta name="description" content="爆料黑公司，后来人谨慎入坑。IT黑名单，BLACKLIST.CN" />
+      <meta name="keywords" content="IT黑名单,黑名单,名单,黑公司,黑企业,IT黑公司,IT公司,职场黑公司" />
+	  <meta name="description" content="前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
       
       <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 	  <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -139,7 +139,7 @@
 				$http({
 					method:'post',
 					url:'/topic/add',
-					data:{'tsno':new Date().getMilliseconds(),'city':t,'company':$scope.company,
+					data:{'tsno':new Date().getTime(),'city':t,'company':$scope.company,
 							'sketch':$scope.sketch,'intro':message,'contact':$scope.contact},
 					headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
 					transformRequest:function(data){return $.param(data);}
@@ -173,7 +173,7 @@
 			$http({
 				method:'post',
 				url:'/topic/s',
-				data:{'tsno':new Date().getMilliseconds(),'key':$scope.kw},
+				data:{'tsno':new Date().getTime(),'key':$scope.kw},
 				headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
 				transformRequest:function(data){return $.param(data);}
 			}).success(function(data){
