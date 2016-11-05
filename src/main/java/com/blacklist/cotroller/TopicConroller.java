@@ -72,7 +72,9 @@ public class TopicConroller {
 		if (RequestValidator.nullValueValidator(id)) {
 			return BaseResponse.forbidden(req.getTsno(), "无效的页面");
 		}
-		return BaseResponse.success(req.getTsno()).setResponse(topicService.get(id));
+		Topic topic = topicService.get(id);
+		return null == topic ? BaseResponse.empty(req.getTsno(), "无此数据")
+				: BaseResponse.success(req.getTsno()).setResponse(topicService.get(id));
 	}
 	
 	@RequestMapping("/view")
@@ -82,29 +84,5 @@ public class TopicConroller {
 		}
 		topicService.viewPage(id);
 		return BaseResponse.success(req.getTsno());
-	}
-	
-	@RequestMapping("/reply")
-	public BaseResponse reply(BaseRequest req, TopicReply reply) {
-		if (RequestValidator.nullValueValidator(reply.getTopicId(), reply.getIp(), reply.getCitySN(), reply.getIntro())) {
-			return BaseResponse.forbidden(req.getTsno(), "403");
-		}
-		if (null == topicService.get(reply.getTopicId())) {
-			return BaseResponse.forbidden(req.getTsno(), "bad topic");
-		}
-		reply.setStatus(TopicReplyEnum.Status.NORMAL.getValue());
-		reply.setTime(new Date());
-		reply.setUpNum(0);
-		reply.setDownNum(0);
-		topicReplyService.addReply(reply);
-		return BaseResponse.success(req.getTsno());
-	}
-	
-	@RequestMapping("/comments")
-	public BaseResponse comments(BaseRequest req, Long id) {
-		if (RequestValidator.nullValueValidator(id)) {
-			return BaseResponse.forbidden(req.getTsno(), "403");
-		}
-		return BaseResponse.success(req.getTsno()).setResponse(topicReplyService.getReplys(id));
 	}
 }

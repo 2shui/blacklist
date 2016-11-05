@@ -94,6 +94,14 @@ public class BaseResponse implements Serializable {
 		baseResponse.setSysTime(""+System.currentTimeMillis());
 		return baseResponse;
 	}
+	
+	public static BaseResponse empty(String seqNo, String desc) {
+		BaseResponse baseResponse = new BaseResponse(seqNo);
+		baseResponse.setCode("404");
+		baseResponse.setDesc(desc);
+		baseResponse.setSysTime(""+System.currentTimeMillis());
+		return baseResponse;
+	}
 
 	@Override
 	public String toString() {
