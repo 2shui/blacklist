@@ -31,8 +31,8 @@ public class FeedbackConroller {
 	 */
 	@RequestMapping("/add")
 	public BaseResponse up(BaseRequest req, String content, String contact) {
-		if (RequestValidator.nullValueValidator(content)) {
-			return BaseResponse.forbidden(req.getTsno(), "参数不完整");
+		if (RequestValidator.stringEmptyValidator(content)) {
+			return BaseResponse.forbidden(req.getTsno(), "建议内容不能为空");
 		}
 		Feedback feedback = new Feedback();
 		feedback.setContent(content);

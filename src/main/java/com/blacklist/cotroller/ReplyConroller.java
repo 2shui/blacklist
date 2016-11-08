@@ -33,7 +33,7 @@ public class ReplyConroller {
 		if (RequestValidator.nullValueValidator(reply.getTopicId())
 				|| RequestValidator.stringEmptyValidator(reply.getIp(),
 						reply.getCitySN(), reply.getIntro())) {
-			return BaseResponse.forbidden(req.getTsno(), "403");
+			return BaseResponse.forbidden(req.getTsno(), "必填字段不能为空");
 		}
 		if (null == topicService.get(reply.getTopicId())) {
 			return BaseResponse.forbidden(req.getTsno(), "bad topic");

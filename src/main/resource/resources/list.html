@@ -5,7 +5,7 @@
       <title>IT黑名单</title>
       <meta name="fragment" content="!">
       <meta name="keywords" content="IT黑名单,黑名单,IT,公司黑名单,企业黑名单,IT公司黑名单" />
-	  <meta name="description" content="前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
+	  <meta name="description" content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
       
       <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 	  <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -72,7 +72,7 @@
 				</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-horizontal">
+				<form class="form-horizontal" id="topic-add">
 					<div class="form-group">
 						<label class="col-sm-2 control-label">所在城市</label>
 						<div class="col-sm-8">
@@ -145,13 +145,14 @@
 					headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
 					transformRequest:function(data){return $.param(data);}
 				}).success(function(data){
+					var msg = data.desc;
 					if("100"==data.code) {
-						$("#myModal").modal('hide');
-						$("#msgModal").modal();
-					} else {
-						$("#msgModal .modal-body").html(data.desc);
-						$("#msgModal").modal();
+						msg = 'success!';
 					}
+					$("#myModal").modal('hide');
+					$("#msgModal .modal-body").html(msg);
+					$("#msgModal").modal();
+					$('#topic-add')[0].reset();
 				});
 			}
 		});
