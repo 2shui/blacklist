@@ -1,9 +1,9 @@
 package com.blacklist.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.blacklist.domain.Topic;
-import com.blacklist.domain.TopicReply;
 
 public interface TopicService {
 	
@@ -17,4 +17,9 @@ public interface TopicService {
 	
 	public List<Topic> getAll();
 	
+	public List<Topic> findByStatus(Integer status);
+	
+	public List<Topic> findByCreateTime(Date date);
+	
+	public Integer count(Integer status);
 }

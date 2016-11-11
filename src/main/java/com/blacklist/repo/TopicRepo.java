@@ -1,5 +1,6 @@
 package com.blacklist.repo;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,13 @@ public interface TopicRepo extends JpaRepository<Topic, Long> {
 	public List<Topic> findByStatus(Integer status);
 	
 	public List<Topic> findByCompanyLike(String company);
+	
+	public List<Topic> findByCreateTimeGreaterThan(Date date);
+	
+	@Query(value="select count(1) from it_topic t where t.status=:status", nativeQuery=true)
+	public Integer countByStatus(@Param("status") Integer status);
+	
+	@Modifying
+	@Query(value="update it_topic t set t.status=:status where t.id=:id", nativeQuery=true)
+	public int updateStatus(Long id, Integer status);
 }

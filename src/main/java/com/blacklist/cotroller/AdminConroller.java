@@ -42,7 +42,7 @@ public class AdminConroller {
 				|| "0:0:0:0:0:0:0:1".equals(clientIp) || "120.24.186.80".equals(clientIp)) {
 			try {
 				LuceneIKUtil.getInstance().createIndex(
-						indexServer.build(topicService.getAll()), true);
+						indexServer.build(topicService.findByStatus(1)), true);
 				log.info("fullIndex success...");
 			} catch (Exception e) {
 				log.error("rebuild index error:{}", e);

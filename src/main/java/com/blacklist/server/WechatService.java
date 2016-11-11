@@ -22,7 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.blacklist.config.WechatConfig;
+import com.blacklist.domain.Topic;
+import com.blacklist.domain.enums.TopicEnum;
 import com.blacklist.enums.WechatType;
+import com.blacklist.repo.TopicRepo;
 import com.blacklist.service.TopicService;
 import com.blacklist.utils.LuceneIKUtil;
 import com.blacklist.utils.SHA1;
@@ -36,6 +39,8 @@ public class WechatService {
 	IndexServer indexServer;
 	@Autowired
 	TopicService topicService;
+	@Autowired
+	private TopicRepo topicRepo;
 
 	public String getToken() throws IOException {
 		if ((System.currentTimeMillis() / 1000 - WechatConfig.expiresTime) > 7000) {
@@ -148,16 +153,39 @@ public class WechatService {
 	}
 
 	private String buildResponse(Map<String, String> map) {
+		String content = map.get("Content");
 		if(WechatConfig.autoUser.equalsIgnoreCase(map.get("FromUserName"))) {
-			if("fullIndex".equalsIgnoreCase(map.get("Content"))) {
+			if("fullIndex".equalsIgnoreCase(content)) {
+				/**
+				 * 全量索引
+				 * */
 				try {
 					LuceneIKUtil.getInstance().createIndex(
-							indexServer.build(topicService.getAll()), true);
+							indexServer.build(topicRepo.findByStatus(TopicEnum.Status.NORMAL.getValue())), true);
 					log.info("fullIndex success...");
 				} catch (Exception e) {
 					log.error("rebuild index error:{}", e);
 					return buildError(map, e.getMessage());
 				}
+				return baseTextResponse(map).replace("###MSG###", "操作成功！");
+			} else if("cl".equalsIgnoreCase(content)) {
+				/**
+				 * 数据增长 countLast
+				 * */
+				Integer count = topicRepo.countByStatus(TopicEnum.Status.NORMAL.getValue());
+				List<Topic> list = topicService.findByCreateTime(null);
+				StringBuffer sb = new StringBuffer("count:" + count + "\t\n");
+				list.forEach(topic -> {
+					sb.append(topic.getSketch() + "#" + topic.getCompany() + "\t\n");
+				});
+				return baseTextResponse(map).replace("###MSG###", sb.toString());
+			} else if(content.matches("cg#s#\\d+#\\d+")) {
+				/**
+				 * 修改状态 eg:cg#s#123#2
+				 * */
+				String[] str = content.split("#");
+				topicRepo.updateStatus(Long.parseLong(str[2]),
+						Integer.parseInt(str[3]));
 				return baseTextResponse(map).replace("###MSG###", "操作成功！");
 			} else {
 				return buildNotSupportResponse(map);

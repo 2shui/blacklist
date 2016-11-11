@@ -2,7 +2,9 @@ package com.blacklist.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -67,4 +69,27 @@ public class TopicServiceImpl implements TopicService {
 	public List<Topic> getAll() {
 		return topicRepo.findAll();
 	}
+
+	@Override
+	public List<Topic> findByStatus(Integer status) {
+		return topicRepo.findByStatus(status);
+	}
+
+	@Override
+	public Integer count(Integer status) {
+		return topicRepo.countByStatus(status);
+	}
+
+	@Override
+	public List<Topic> findByCreateTime(Date date) {
+		if (null == date) {
+			long current = System.currentTimeMillis();
+			long zero = current / (1000 * 3600 * 24) * (1000 * 3600 * 24)
+					- TimeZone.getDefault().getRawOffset();
+			date = new Date(zero);
+		}
+		return topicRepo.findByCreateTimeGreaterThan(date);
+	}
+	
+	
 }
