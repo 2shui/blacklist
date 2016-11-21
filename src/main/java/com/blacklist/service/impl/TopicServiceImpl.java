@@ -11,6 +11,9 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,6 +92,13 @@ public class TopicServiceImpl implements TopicService {
 			date = new Date(zero);
 		}
 		return topicRepo.findByCreateTimeGreaterThan(date);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Topic> getLimit(Integer num, Sort sort) {
+		Pageable page = new PageRequest(0, num, sort);
+		return (List<Topic>) topicRepo.findAll(page);
 	}
 	
 	

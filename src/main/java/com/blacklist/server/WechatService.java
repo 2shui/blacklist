@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,14 +20,20 @@ import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.blacklist.config.FreemarkerConfig;
 import com.blacklist.config.WechatConfig;
+import com.blacklist.domain.BlogArticle;
 import com.blacklist.domain.Topic;
 import com.blacklist.domain.enums.TopicEnum;
 import com.blacklist.enums.WechatType;
+import com.blacklist.repo.BlogArticleRepo;
 import com.blacklist.repo.TopicRepo;
 import com.blacklist.service.TopicService;
+import com.blacklist.utils.FreemarkerUtils;
 import com.blacklist.utils.LuceneIKUtil;
 import com.blacklist.utils.SHA1;
 import com.google.gson.JsonObject;
@@ -41,6 +48,8 @@ public class WechatService {
 	TopicService topicService;
 	@Autowired
 	private TopicRepo topicRepo;
+	@Autowired
+	BlogArticleRepo articleRepo;
 
 	public String getToken() throws IOException {
 		if ((System.currentTimeMillis() / 1000 - WechatConfig.expiresTime) > 7000) {
@@ -168,12 +177,14 @@ public class WechatService {
 					return buildError(map, e.getMessage());
 				}
 				return baseTextResponse(map).replace("###MSG###", "操作成功！");
-			} else if("cl".equalsIgnoreCase(content)) {
+			} else if(content.matches("cl \\d+")) {
 				/**
-				 * 数据增长 countLast
+				 * 数据增长 cl3 || countLast 3
 				 * */
 				Integer count = topicRepo.countByStatus(TopicEnum.Status.NORMAL.getValue());
-				List<Topic> list = topicService.findByCreateTime(null);
+				//List<Topic> list = topicService.findByCreateTime(null);
+				Integer num = Integer.parseInt(content.split(" ")[1]);
+				List<Topic> list = topicService.getLimit(num, new Sort(Direction.ASC, "id"));
 				StringBuffer sb = new StringBuffer("count:" + count + "\t\n");
 				list.forEach(topic -> {
 					sb.append(topic.getSketch() + "#" + topic.getCompany() + "\t\n");
@@ -181,12 +192,32 @@ public class WechatService {
 				return baseTextResponse(map).replace("###MSG###", sb.toString());
 			} else if(content.matches("cg#s#\\d+#\\d+")) {
 				/**
-				 * 修改状态 eg:cg#s#123#2
+				 * 修改状态 eg:cg#s#123#2 || change status id:123 statusTo 2
 				 * */
 				String[] str = content.split("#");
 				topicRepo.updateStatus(Long.parseLong(str[2]),
 						Integer.parseInt(str[3]));
 				return baseTextResponse(map).replace("###MSG###", "操作成功！");
+			} else if(content.matches("sb \\d+")) {
+				/**
+				 * 静态化blog sb111 || staticBlog id:111
+				 * */
+				Long id = Long.parseLong(content.split(" ")[1]);
+				BlogArticle article = articleRepo.findOne(id);
+				SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+				String now = df.format(article.getCreateTime());
+				
+				Map<String, Object> ftlMap = new HashMap<String, Object>();
+				ftlMap.put("title", article.getTitle());
+				ftlMap.put("article", article);
+				ftlMap.put("site", FreemarkerConfig.site);
+				ftlMap.put("path", now);
+				FreemarkerUtils.analysisTemplate(now, id+".html", map, null, null);
+				return baseTextResponse(map).replace("###MSG###", "操作成功！");
+			} else if(content.equalsIgnoreCase("help")) {
+				return baseTextResponse(map).replace("###MSG###", "fullIndex:全量索引<br/>cl{num}:数据增长 cl3 || countLast 3"
+						+ "<br/>cg{num} 修改状态 eg:cg#s#123#2 || change status id:123 statusTo 2"
+						+ "<br/>sb{num} 静态化blog sb111 || staticBlog id:111");
 			} else {
 				return buildNotSupportResponse(map);
 			}

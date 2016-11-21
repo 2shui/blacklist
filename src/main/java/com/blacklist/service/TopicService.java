@@ -3,6 +3,8 @@ package com.blacklist.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
+
 import com.blacklist.domain.Topic;
 
 public interface TopicService {
@@ -22,4 +24,6 @@ public interface TopicService {
 	public List<Topic> findByCreateTime(Date date);
 	
 	public Integer count(Integer status);
+	
+	public List<Topic> getLimit(Integer num, Sort sort);
 }
