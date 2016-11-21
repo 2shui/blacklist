@@ -40,21 +40,6 @@ public class BlogConroller {
 	@Autowired
 	BlogArticleRepo articleRepo;
 	
-	@RequestMapping("/{id}")
-	public String index(@PathVariable("id") Long id) {
-		BlogArticle article = articleRepo.findOne(id);
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-		String now = df.format(article.getCreateTime());
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("title", article.getTitle());
-		map.put("article", article);
-		map.put("site", FreemarkerConfig.site);
-		map.put("path", now);
-		FreemarkerUtils.analysisTemplate(now, id+".html", map, null, null);
-		return "success";
-	}
-	
 	@RequestMapping("/uploadImg")
 	@ResponseBody
 	public String uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
