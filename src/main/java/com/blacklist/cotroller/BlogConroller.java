@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +22,7 @@ import com.blacklist.bean.BaseRequest;
 import com.blacklist.bean.BaseResponse;
 import com.blacklist.config.FreemarkerConfig;
 import com.blacklist.domain.BlogArticle;
-import com.blacklist.repo.BlogArticleRepo;
-import com.blacklist.utils.FreemarkerUtils;
+import com.blacklist.service.BlogArticleService;
 import com.blacklist.utils.MD5Util;
 import com.blacklist.utils.RequestValidator;
 
@@ -38,7 +36,7 @@ import com.blacklist.utils.RequestValidator;
 @RequestMapping("/blog")
 public class BlogConroller {
 	@Autowired
-	BlogArticleRepo articleRepo;
+	BlogArticleService blogArticleService;
 	
 	@RequestMapping("/uploadImg")
 	@ResponseBody
@@ -48,7 +46,10 @@ public class BlogConroller {
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
 		String now = df.format(new Date());
 		String targetName = new Date().getTime() + type;
-		File f = new File(FreemarkerConfig.imgPath + "\\" + now, targetName);
+		File f = new File(FreemarkerConfig.imgPath + "/" + now, targetName);
+		if (!f.getParentFile().exists()) {
+			f.getParentFile().mkdirs();
+		}
 		try {
 			FileOutputStream fos = new FileOutputStream(f);
 			fos.write(file.getBytes());
@@ -67,7 +68,7 @@ public class BlogConroller {
 			return BaseResponse.forbidden(req.getTsno(), "参数不完整");
 		}
 		article.setCreateTime(new Date());
-		articleRepo.saveAndFlush(article);
+		blogArticleService.save(article);
 		return BaseResponse.success(req.getTsno());
 	}
 	

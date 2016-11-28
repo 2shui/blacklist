@@ -8,7 +8,7 @@
       <meta name="keywords" content="IT黑名单,黑名单,IT,公司黑名单,企业黑名单,IT公司黑名单" />
 	  <meta name="description" content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
       
-      <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+      <link rel="icon" type="image/x-icon" href="/favicon.ico">
 	  <link href="${site}/css/bootstrap.min.css" rel="stylesheet">
 	  
 	  <script src="${site}/js/jquery.min.js"></script>
@@ -22,10 +22,11 @@
 		$('.selectpicker').selectpicker({'selectedText': 'cat'});
     });
   </script>
-  <script src="/js/baidutj.js"></script>
+  <script src="${site}/js/baidutj.js"></script>
    </head>
    <body class="">
-	<div class="jumbotron container">
+	<div class=" container">
+		<h6><small><a href="http://www.itblacklist.cn/" title="IT黑名单">首页</a></small></h6>
 		<p class="text-center">${article.title}</p>
 		<h6 class="text-center"><small>${article.author} ${article.createTime}</small></h6>
 		<br/>
@@ -66,11 +67,11 @@
 		</div>
 	</div>
 	<script>
-	function getURLParameter(name) {
-		return new RegExp('\\d+').exec(window.location.pathname)[0];
+	function getURLParameter() {
+		return new RegExp('\\d+').exec(new RegExp('\\d+.html').exec(window.location.pathname)[0])[0];
 	}
 	</script>
-	<script src="/js/blog-details.js"></script>
+	<script src="${site}/js/blog-details.js"></script>
 	<script>
 		var commentApp = angular.module('commentApp',[]);
 		commentApp.controller('commentCtrl',function($scope, $http){

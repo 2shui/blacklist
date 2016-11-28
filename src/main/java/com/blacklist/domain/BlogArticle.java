@@ -55,6 +55,11 @@ public class BlogArticle implements Serializable {
      * 创建时间
      * */
     private Date createTime;
+    
+    /**
+     * 访问数
+     * */
+    private Integer accessNum;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -111,6 +116,15 @@ public class BlogArticle implements Serializable {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	@Column(name = "access_num")
+	public Integer getAccessNum() {
+		return accessNum;
+	}
+
+	public void setAccessNum(Integer accessNum) {
+		this.accessNum = accessNum;
 	}
 
 

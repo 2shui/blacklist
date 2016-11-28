@@ -62,12 +62,12 @@ public class FreemarkerUtils {
 		initTemplate(templateFile, codeType);
 		codeType = null == codeType ? "UTF-8" : codeType;
 		try {
-			File f = new File(FreemarkerConfig.htmlPath + "\\" + targetPath);
+			File f = new File(FreemarkerConfig.htmlPath + "/" + targetPath);
 			if(!f.exists()) {
 				f.mkdirs();
 			}
 			
-			FileOutputStream os = new FileOutputStream(f.getPath() + "\\" + file);
+			FileOutputStream os = new FileOutputStream(f.getPath() + "/" + file);
 			Writer out = new OutputStreamWriter(os, codeType);
 			template.process(data, out);
 			out.flush();

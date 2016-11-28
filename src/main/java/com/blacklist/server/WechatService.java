@@ -179,12 +179,12 @@ public class WechatService {
 				return baseTextResponse(map).replace("###MSG###", "操作成功！");
 			} else if(content.matches("cl \\d+")) {
 				/**
-				 * 数据增长 cl3 || countLast 3
+				 * 数据增长 cl 3 || countLast 3
 				 * */
 				Integer count = topicRepo.countByStatus(TopicEnum.Status.NORMAL.getValue());
 				//List<Topic> list = topicService.findByCreateTime(null);
 				Integer num = Integer.parseInt(content.split(" ")[1]);
-				List<Topic> list = topicService.getLimit(num, new Sort(Direction.ASC, "id"));
+				List<Topic> list = topicService.getLimit(num, new Sort(Direction.DESC, "id"));
 				StringBuffer sb = new StringBuffer("count:" + count + "\t\n");
 				list.forEach(topic -> {
 					sb.append(topic.getSketch() + "#" + topic.getCompany() + "\t\n");
@@ -200,7 +200,7 @@ public class WechatService {
 				return baseTextResponse(map).replace("###MSG###", "操作成功！");
 			} else if(content.matches("sb \\d+")) {
 				/**
-				 * 静态化blog sb111 || staticBlog id:111
+				 * 静态化blog sb 111 || staticBlog id:111
 				 * */
 				Long id = Long.parseLong(content.split(" ")[1]);
 				BlogArticle article = articleRepo.findOne(id);
@@ -212,12 +212,13 @@ public class WechatService {
 				ftlMap.put("article", article);
 				ftlMap.put("site", FreemarkerConfig.site);
 				ftlMap.put("path", now);
-				FreemarkerUtils.analysisTemplate(now, id+".html", map, null, null);
+				FreemarkerUtils.analysisTemplate(now, id+".html", ftlMap, null, null);
 				return baseTextResponse(map).replace("###MSG###", "操作成功！");
 			} else if(content.equalsIgnoreCase("help")) {
-				return baseTextResponse(map).replace("###MSG###", "fullIndex:全量索引<br/>cl{num}:数据增长 cl3 || countLast 3"
-						+ "<br/>cg{num} 修改状态 eg:cg#s#123#2 || change status id:123 statusTo 2"
-						+ "<br/>sb{num} 静态化blog sb111 || staticBlog id:111");
+				return baseTextResponse(map).replace("###MSG###", "fullIndex:全量索引\n\t"
+						+ "cl {num}:数据增长 cl 3 || countLast 3\n\t"
+						+ "cg {num} 修改状态 eg:cg#s#123#2 || change status id:123 statusTo 2\n\t"
+						+ "sb {num} 静态化blog sb 111 || staticBlog id:111");
 			} else {
 				return buildNotSupportResponse(map);
 			}

@@ -5,7 +5,7 @@
       <title>IT黑名单--添加博客</title>
       <meta name="fragment" content="!">
       
-      <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+      <link rel="icon" type="image/x-icon" href="/favicon.ico">
       <!-- include libraries(jQuery, bootstrap) -->
 	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script> 
