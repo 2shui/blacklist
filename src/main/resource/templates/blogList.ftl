@@ -82,7 +82,7 @@
 	$.ajax({
 		type:'get',
 		dataType:'jsonp',
-		url:'http://www.test.cn/blog/ln',
+		url:'http://www.itblacklist.cn/blog/ln',
 		data:{'tsno':new Date().getTime()},
 		success:function(data){
 			if("100"==data.code){
@@ -91,7 +91,6 @@
 					var id=ls[i].id;
 					$("#n"+id).html(ls[i].accessNum);
 				}
-				localStorage.ba=reLocal(localStorage.ba,t);
 			}
 		}
 	});
