@@ -42,7 +42,7 @@ public class TopicConroller {
 		if(!RequestValidator.nullValueValidator(topic.getId())) {
 			return BaseResponse.forbidden(req.getTsno(), "非法请求");
 		}
-		if(RequestValidator.stringEmptyValidator(topic.getCity(), topic.getCompany(), topic.getSketch(), topic.getIntro(), topic.getContact())){
+		if(RequestValidator.stringEmptyValidator(topic.getCity(), topic.getCompany(), topic.getSketch(), topic.getIntro())){
 			return BaseResponse.forbidden(req.getTsno(), "必填参数不完整");
 		}
 		topic.setCreateTime(new Date());

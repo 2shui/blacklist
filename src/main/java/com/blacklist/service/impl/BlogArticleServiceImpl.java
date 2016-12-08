@@ -1,6 +1,9 @@
 package com.blacklist.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +25,11 @@ public class BlogArticleServiceImpl implements BlogArticleService {
 	@Transactional
 	public int view(Long id) {
 		return articleRepo.addAccessNum(id);
+	}
+
+	@Override
+	public List<BlogArticle> findAll(Sort sort) {
+		return articleRepo.findAll(sort);
 	}
 
 }

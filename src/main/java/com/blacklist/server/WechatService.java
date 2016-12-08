@@ -32,6 +32,7 @@ import com.blacklist.domain.enums.TopicEnum;
 import com.blacklist.enums.WechatType;
 import com.blacklist.repo.BlogArticleRepo;
 import com.blacklist.repo.TopicRepo;
+import com.blacklist.service.BlogArticleService;
 import com.blacklist.service.TopicService;
 import com.blacklist.utils.FreemarkerUtils;
 import com.blacklist.utils.LuceneIKUtil;
@@ -50,6 +51,8 @@ public class WechatService {
 	private TopicRepo topicRepo;
 	@Autowired
 	BlogArticleRepo articleRepo;
+	@Autowired
+	BlogArticleService blogArticleService;
 
 	public String getToken() throws IOException {
 		if ((System.currentTimeMillis() / 1000 - WechatConfig.expiresTime) > 7000) {
@@ -219,6 +222,17 @@ public class WechatService {
 						+ "cl {num}:数据增长 cl 3 || countLast 3\n\t"
 						+ "cg {num} 修改状态 eg:cg#s#123#2 || change status id:123 statusTo 2\n\t"
 						+ "sb {num} 静态化blog sb 111 || staticBlog id:111");
+			} else if(content.equalsIgnoreCase("sbl")) {
+				List<BlogArticle> articles = blogArticleService.findAll(new Sort(Direction.DESC, "id"));
+				SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+				articles.forEach(article->{
+					article.setSource(df.format(article.getCreateTime()));
+				});
+				Map<String, Object> ftlMap = new HashMap<String, Object>();
+				ftlMap.put("articles", articles);
+				ftlMap.put("site", FreemarkerConfig.site);
+				FreemarkerUtils.analysisTemplate(null, "index.html", ftlMap, "blogList.ftl", null);
+				return baseTextResponse(map).replace("###MSG###", "操作成功！");
 			} else {
 				return buildNotSupportResponse(map);
 			}

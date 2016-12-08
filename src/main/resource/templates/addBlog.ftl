@@ -108,11 +108,11 @@
 					var msg = data.desc;
 					if("100"==data.code) {
 						msg = 'success!';
+						$('#blog')[0].reset();
+						$('#summernote').summernote('code', '');
 					}
 					$("#msgModal .modal-body").html(msg);
 					$("#msgModal").modal();
-					$('#blog')[0].reset();
-					$('#summernote').summernote('code', '')
 				});
 				
 			};

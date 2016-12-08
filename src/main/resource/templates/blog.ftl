@@ -5,7 +5,7 @@
       <title>${title}--IT黑名单</title>
       <meta name="fragment" content="!">
       <meta name="robots" content="index,follow" />
-      <meta name="keywords" content="IT黑名单,黑名单,IT,公司黑名单,企业黑名单,IT公司黑名单" />
+      <meta name="keywords" content="IT黑名单,黑名单,培训机构黑名单,公司黑名单,企业黑名单" />
 	  <meta name="description" content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
       
       <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -19,14 +19,35 @@
 	  <!-- var returnCitySN = {"cip": "183.6.154.130", "cid": "440100", "cname": "广东省广州市"}; -->
 	  <script type="text/javascript">
 	$(window).on('load', function () {
-		$('.selectpicker').selectpicker({'selectedText': 'cat'});
+		
     });
   </script>
   <script src="${site}/js/baidutj.js"></script>
    </head>
    <body class="">
+   	<div class="container">
+   		<h3></h3>
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid"><div class="col-lg-3"></div>
+				<div class="navbar-header col-lg-1">
+					<a class="navbar-brand" href="http://www.itblacklist.cn/">首页</a>
+				</div>
+				<div class="col-lg-7">
+					<ul class="nav navbar-nav col-lg-12">
+						<li class="active"><a href="http://blog.itblacklist.cn/">博 客</a></li>
+						<li class=""><a href="javaScript:void(0);" data-toggle="modal" data-target="#myModal"">爆 料</a></li>
+						<li class=""><a href="http://www.itblacklist.cn/question.html">常 见 问 题</a></li>
+						<li class=""><a href="http://www.itblacklist.cn/almanac.html">程 序 员 老 皇 历</a></li>
+						<li class=""><a href="JavaScript:void(0);" data-toggle="modal" data-target="#feedbackModal">反 馈</a></li>
+						<li class=""><a href="http://tucao.itblacklist.cn/">吐 槽</a></li>
+					</ul>
+				</div><div class="col-lg-1"></div>
+			</div>
+		</nav>
+   	</div>
+   	
 	<div class=" container">
-		<h6><small><a href="http://www.itblacklist.cn/" title="IT黑名单">首页</a></small></h6>
+		
 		<p class="text-center">${article.title}</p>
 		<h6 class="text-center"><small>${article.author} ${article.createTime}</small></h6>
 		<br/>
@@ -63,7 +84,8 @@
 	
 	<div class="container">
 		<div class="container text-center">
-			© Copyright 2016 IT黑名单 Inc.All Rights Reserved. <a href="http://www.miitbeian.gov.cn">豫ICP备15018592号-2</a>
+			© Copyright 2016 IT黑名单 Inc.All Rights Reserved. 
+			<a rel="nofollow" target="_blank" href="http://www.miitbeian.gov.cn">豫ICP备15018592号-2</a>
 		</div>
 	</div>
 	<script>
