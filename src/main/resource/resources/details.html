@@ -72,6 +72,7 @@
 	</div>
 	
 	<div class="container">
+		<code>当事人一人之言，或有失公允，请理性看待！</code><br/>
 		<span>本文链接：http://www.itblacklist.cn/details/</span><span id="con-uri"></span>
 	</div>
 	<div id="commentApp" ng-app="commentApp" ng-controller="commentCtrl" class="container">
@@ -128,7 +129,6 @@
 				headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
 				transformRequest:function(data){return $.param(data);}
 			}).success(function(data){
-				console.log(data);
 				if("100"==data.code) {
 					$scope.topic = data.response;
 				} else if("404"==data.code) {

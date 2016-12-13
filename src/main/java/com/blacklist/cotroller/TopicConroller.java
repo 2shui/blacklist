@@ -11,9 +11,7 @@ import com.blacklist.bean.BaseRequest;
 import com.blacklist.bean.BaseResponse;
 import com.blacklist.config.WebConfig;
 import com.blacklist.domain.Topic;
-import com.blacklist.domain.TopicReply;
 import com.blacklist.domain.enums.TopicEnum;
-import com.blacklist.domain.enums.TopicReplyEnum;
 import com.blacklist.service.TopicReplyService;
 import com.blacklist.service.TopicService;
 import com.blacklist.utils.RequestValidator;
@@ -74,7 +72,7 @@ public class TopicConroller {
 		}
 		Topic topic = topicService.get(id);
 		return null == topic ? BaseResponse.empty(req.getTsno(), "无此数据")
-				: BaseResponse.success(req.getTsno()).setResponse(topicService.get(id));
+				: BaseResponse.success(req.getTsno()).setResponse(topic);
 	}
 	
 	@RequestMapping("/view")
