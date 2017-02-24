@@ -30,7 +30,10 @@
 	  		processData:false,
 	  		success:function(url){
 	  			url = '${imgSite}'+url;
-	  			$("#summernote").summernote('insertImage', url, 'img');
+	  			$("#summernote").summernote('insertImage', url, function($image){
+	  				$image.attr('title','IT黑名单--http://www.itblacklist.cn/');
+	  				$image.attr('class','img-responsive');
+	  			});
 	  		}
 	  	});
 	  }

@@ -6,7 +6,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.blacklist.config.FreemarkerConfig;
+import com.blacklist.config.SourceDescConfig;
 import com.blacklist.config.WechatConfig;
 import com.blacklist.domain.BlogArticle;
 import com.blacklist.domain.Topic;
@@ -36,9 +39,11 @@ import com.blacklist.service.BlogArticleService;
 import com.blacklist.service.TopicService;
 import com.blacklist.utils.FreemarkerUtils;
 import com.blacklist.utils.LuceneIKUtil;
+import com.blacklist.utils.Lunar;
 import com.blacklist.utils.SHA1;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mysql.jdbc.StringUtils;
 
 @Service
 public class WechatService {
@@ -53,6 +58,17 @@ public class WechatService {
 	BlogArticleRepo articleRepo;
 	@Autowired
 	BlogArticleService blogArticleService;
+	
+	private final Map<String, String> days = new HashMap<String, String>();
+	{
+		days.put("母后", "0216");
+		days.put("泰山", "0430");
+		days.put("兮兮", "0810");
+		days.put("莉莉", "0906");
+		days.put("倩倩", "1005");
+		days.put("我丽", "1212");
+		days.put("豆丁", "1216");
+	}
 
 	public String getToken() throws IOException {
 		if ((System.currentTimeMillis() / 1000 - WechatConfig.expiresTime) > 7000) {
@@ -164,81 +180,224 @@ public class WechatService {
 		return baseTextResponse(map).replace("###MSG###", err);
 	}
 
+	/**
+	 * 全量索引
+	 * @return
+	 */
+	private String funFullIndex(Map<String, String> map) {
+		try {
+			LuceneIKUtil.getInstance().createIndex(
+					indexServer.build(topicRepo.findByStatus(TopicEnum.Status.NORMAL.getValue())), true);
+			log.info("fullIndex success...");
+		} catch (Exception e) {
+			log.error("rebuild index error:{}", e);
+			return buildError(map, "重建索引失败！");
+		}
+		return baseTextResponse(map).replace("###MSG###", "操作成功！");
+	}
+	
+	/**
+	 * 数据增长 cl 3 || countLast 3
+	 * @param command
+	 * @return
+	 */
+	private String funReportIncrease(Map<String, String> map, String command) {
+		Integer count = topicRepo.countByStatus(TopicEnum.Status.NORMAL
+				.getValue());
+		Integer num = Integer.parseInt(command.split(" ")[1]);
+		List<Topic> list = topicService.getLimit(num, new Sort(Direction.DESC,
+				"id"));
+		StringBuffer sb = new StringBuffer("count:" + count + "\t\n");
+		list.forEach(topic -> {
+			sb.append(topic.getSketch() + "#" + topic.getCompany() + "\t\n");
+		});
+		return baseTextResponse(map).replace("###MSG###", sb.toString());
+	}
+	
+	/**
+	 * 修改状态 eg:cg#s#123#2 || change status id:123 statusTo 2
+	 * @param command
+	 */
+	private String funChangeReportState(Map<String, String> map, String command) {
+		String[] str = command.split("#");
+		topicRepo.updateStatus(Long.parseLong(str[2]), Integer.parseInt(str[3]));
+		return baseTextResponse(map).replace("###MSG###", "操作成功！");
+	}
+	
+	/**
+	 * 静态化blog sb 111 || staticBlog id:111
+	 * @param command
+	 */
+	private String funStaticBlog(Map<String, String> map, String command) {
+		Long id = Long.parseLong(command.split(" ")[1]);
+		BlogArticle article = articleRepo.findOne(id);
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+		String now = df.format(article.getCreateTime());
+		
+		Map<String, Object> ftlMap = new HashMap<String, Object>();
+		ftlMap.put("title", article.getTitle());
+		ftlMap.put("article", article);
+		ftlMap.put("site", FreemarkerConfig.site);
+		ftlMap.put("path", now);
+		FreemarkerUtils.analysisTemplate(now, id+".html", ftlMap, null, null);
+		return baseTextResponse(map).replace("###MSG###", "操作成功！");
+	}
+	
+	/**
+	 * 静态化博客列表页
+	 * @param map
+	 * @return
+	 */
+	private String funStaticBlogList(Map<String, String> map) {
+		List<BlogArticle> articles = blogArticleService.findAll(new Sort(Direction.DESC, "id"));
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+		articles.forEach(article->{
+			article.setSource(df.format(article.getCreateTime()));
+		});
+		Map<String, Object> ftlMap = new HashMap<String, Object>();
+		ftlMap.put("articles", articles);
+		ftlMap.put("site", FreemarkerConfig.site);
+		FreemarkerUtils.analysisTemplate(null, "index.html", ftlMap, "blogList.ftl", null);
+		return baseTextResponse(map).replace("###MSG###", "操作成功！");
+	}
+	
+	/**
+	 * 获取关注日期
+	 * @param map
+	 * @return
+	 */
+	private String funFindFllowDate(Map<String, String> map) {
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		Date now = new Date();
+		String result = "";
+		try {
+			for (String key : days.keySet()) {
+				Date feast = Lunar.lunarToSolar(year + days.get(key), false);
+				if (feast.after(now)) {
+					int cd = new Long((feast.getTime() - now.getTime())
+							/ 1000 / 3600 / 24).intValue();
+					if (cd < 30) {
+						result += key + ":" + days.get(key) + "还有" + cd + "天\n";
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.error("lunar time format error:{}", e);
+		}
+		if(StringUtils.isEmptyOrWhitespaceOnly(result)) {
+			result = "一个月内无提醒。";
+		}
+		return baseTextResponse(map).replace("###MSG###", result);
+	}
+
+	private String userFunSetDoc(Map<String, String> map, String command) {
+		//c#setDOC \\d{4,4}[+-]
+		//TODO
+		return baseTextResponse(map).replace("###MSG###", "操作成功！");
+	}
+	
+	private String userFunGetDoc(Map<String, String> map, String command) {
+		//c#getDOC \\d+
+		//TODO
+		return baseTextResponse(map).replace("###MSG###", "xxxxx");
+	}
+	
+	private String userFunDelDoc(Map<String, String> map, String command) {
+		//c#getDOC \\d+
+		//TODO
+		return baseTextResponse(map).replace("###MSG###", "xxxxx");
+	}
+	
+	private String userFunFindBlog(Map<String, String> map, String command) {
+		//c#findBlog \\.+
+		//TODO
+		return baseTextResponse(map).replace("###MSG###", "xxxxx");
+	}
+	
+	private boolean isAdmin(String user) {
+		return WechatConfig.autoUser.equalsIgnoreCase(user);
+	}
+	
+	/**
+	 * 获取帮助信息
+	 * @param map
+	 * @return
+	 */
+	private String funHelp(Map<String, String> map) {
+		String help = "fullIndex:全量索引\n"+
+				"cl {num}:数据增长\n"+
+				"cg#s#{id}#{state}:修改状态\n"+
+				"sb {id}:静态化blog\n"+
+				"sbl:静态化blog列表\n"+
+				"日历:查询关注日期";
+		return baseTextResponse(map).replace("###MSG###", help);
+	}
+	
+	/**
+	 * 获取命令说明
+	 * @param map
+	 * @param param
+	 * @return
+	 */
+	private String userFunExplanation(Map<String, String> map, String param) {
+		String arg = param.split(" ")[1];
+		String desc = SourceDescConfig.explanation.get(arg);
+		desc = null == desc ? "无[" + param + "]相关命令,请查证后输入." : desc;
+		return baseTextResponse(map).replace("###MSG###", desc);
+	}
+	
+	/**
+	 * 获取用户帮助信息
+	 * @param map
+	 * @return
+	 */
+	private String userFunHelp(Map<String, String> map) {
+		String help = "You can user command like: c#[command [param...]].\n"+
+				"The command details and the explanation is as follows:\n\n"+
+				"c#help\t\t\t获取帮助信息\n"+
+				"c#help param\t\t获取相关命令的详细说明,param值有[setDOC getDoc delDoc findBlog]\n"+
+				"c#setDOC MMdd+|-\t设置关注日期(DOC. date of concern),阳历6月6号为0606+,阴历9月9日为0909-\n"+
+				"c#getDOC [num]\t\t获取当天起{num}天(默认30天)内的关注日期\n"+
+				"c#delDOC MMdd+|-\t删除关注日期\n"+
+				"c#findBlog {key}\t查找{key}相关博客\n"+
+				"OR\n直接输入查找相关公司名单";
+		return baseTextResponse(map).replace("###MSG###", help);
+	}
+	
 	private String buildResponse(Map<String, String> map) {
 		String content = map.get("Content");
-		if(WechatConfig.autoUser.equalsIgnoreCase(map.get("FromUserName"))) {
+		if(content.matches("c#help .+")) {
+			return userFunExplanation(map, content);
+		} else if(content.matches("c#setDOC \\d{4,4}[+-]")) {
+			return userFunSetDoc(map, content);
+		} else if("c#getDOC".equalsIgnoreCase(content) || content.matches("c#getDOC \\d+")){
+			return userFunGetDoc(map, content);
+		} else if(content.matches("c#delDOC \\d{4,4}[+-]")) {
+			return userFunDelDoc(map, content);
+		} else if(content.matches("c#findBlog .+")) {
+			return userFunFindBlog(map, content);
+		} else if("c#help".equalsIgnoreCase(content)) {
+			return userFunHelp(map);
+		} else if(isAdmin(map.get("FromUserName"))) {
 			if("fullIndex".equalsIgnoreCase(content)) {
-				/**
-				 * 全量索引
-				 * */
-				try {
-					LuceneIKUtil.getInstance().createIndex(
-							indexServer.build(topicRepo.findByStatus(TopicEnum.Status.NORMAL.getValue())), true);
-					log.info("fullIndex success...");
-				} catch (Exception e) {
-					log.error("rebuild index error:{}", e);
-					return buildError(map, e.getMessage());
-				}
-				return baseTextResponse(map).replace("###MSG###", "操作成功！");
+				return funFullIndex(map);
 			} else if(content.matches("cl \\d+")) {
-				/**
-				 * 数据增长 cl 3 || countLast 3
-				 * */
-				Integer count = topicRepo.countByStatus(TopicEnum.Status.NORMAL.getValue());
-				//List<Topic> list = topicService.findByCreateTime(null);
-				Integer num = Integer.parseInt(content.split(" ")[1]);
-				List<Topic> list = topicService.getLimit(num, new Sort(Direction.DESC, "id"));
-				StringBuffer sb = new StringBuffer("count:" + count + "\t\n");
-				list.forEach(topic -> {
-					sb.append(topic.getSketch() + "#" + topic.getCompany() + "\t\n");
-				});
-				return baseTextResponse(map).replace("###MSG###", sb.toString());
+				return funReportIncrease(map, content);
 			} else if(content.matches("cg#s#\\d+#\\d+")) {
-				/**
-				 * 修改状态 eg:cg#s#123#2 || change status id:123 statusTo 2
-				 * */
-				String[] str = content.split("#");
-				topicRepo.updateStatus(Long.parseLong(str[2]),
-						Integer.parseInt(str[3]));
-				return baseTextResponse(map).replace("###MSG###", "操作成功！");
+				return funChangeReportState(map, content);
 			} else if(content.matches("sb \\d+")) {
-				/**
-				 * 静态化blog sb 111 || staticBlog id:111
-				 * */
-				Long id = Long.parseLong(content.split(" ")[1]);
-				BlogArticle article = articleRepo.findOne(id);
-				SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-				String now = df.format(article.getCreateTime());
-				
-				Map<String, Object> ftlMap = new HashMap<String, Object>();
-				ftlMap.put("title", article.getTitle());
-				ftlMap.put("article", article);
-				ftlMap.put("site", FreemarkerConfig.site);
-				ftlMap.put("path", now);
-				FreemarkerUtils.analysisTemplate(now, id+".html", ftlMap, null, null);
-				return baseTextResponse(map).replace("###MSG###", "操作成功！");
-			} else if(content.equalsIgnoreCase("help")) {
-				return baseTextResponse(map).replace("###MSG###", "fullIndex:全量索引\n\t"
-						+ "cl {num}:数据增长 cl 3 || countLast 3\n\t"
-						+ "cg {num} 修改状态 eg:cg#s#123#2 || change status id:123 statusTo 2\n\t"
-						+ "sb {num} 静态化blog sb 111 || staticBlog id:111");
+				return funStaticBlog(map, content);
 			} else if(content.equalsIgnoreCase("sbl")) {
-				List<BlogArticle> articles = blogArticleService.findAll(new Sort(Direction.DESC, "id"));
-				SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-				articles.forEach(article->{
-					article.setSource(df.format(article.getCreateTime()));
-				});
-				Map<String, Object> ftlMap = new HashMap<String, Object>();
-				ftlMap.put("articles", articles);
-				ftlMap.put("site", FreemarkerConfig.site);
-				FreemarkerUtils.analysisTemplate(null, "index.html", ftlMap, "blogList.ftl", null);
-				return baseTextResponse(map).replace("###MSG###", "操作成功！");
+				return funStaticBlogList(map);
+			} else if(content.equalsIgnoreCase("日历")) {
+				return funFindFllowDate(map);
+			} else if("help".equals(content)) {
+				return funHelp(map);
 			} else {
 				return buildNotSupportResponse(map);
 			}
 		} else {
-			log.info("from user is:{}", map.get("FromUserName"));
-			return baseTextResponse(map).replace("###MSG###", "都说了你不知道怎么玩");
+			return baseTextResponse(map).replace("###MSG###", "未知命令");
 		}
 	}
 

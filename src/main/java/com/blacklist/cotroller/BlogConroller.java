@@ -82,7 +82,7 @@ public class BlogConroller {
 	@RequestMapping("/add")
 	@ResponseBody
 	public BaseResponse add(BaseRequest req, BlogArticle article) {
-		if(RequestValidator.stringEmptyValidator(article.getContent(), article.getAuthor())) {
+		if(RequestValidator.stringEmptyValidator(article.getContent())) {
 			return BaseResponse.forbidden(req.getTsno(), "参数不完整");
 		}
 		article.setAccessNum(1);

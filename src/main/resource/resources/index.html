@@ -11,6 +11,9 @@
 	  <link href="css/bootstrap.min.css" rel="stylesheet">
 	  <link rel="stylesheet" type="text/css" href="/css/bootstrap-select.css">
 	  <link rel="stylesheet" type="text/css" href="/css/bootstrap-markdown.min.css">
+	  <style type="text/css">
+	  	.roll_txt{text-align:left;white-space:nowrap; display:block;}
+	  </style>
 	  
 	  <script src="/js/jquery.min.js"></script>
 	  <script src="/js/bootstrap.min.js"></script>
@@ -21,6 +24,12 @@
 	  <script src="/js/city.js"></script>
 	  <script src="/js/angular.min.js"></script>
 	  
+	<script src="http://www.itblacklist.cn/js/jquery.md5.js"></script>
+	<script src="http://www.itblacklist.cn/js/cookie.js"></script>
+	<script src="http://cdn.bootcss.com/sockjs-client/1.1.1/sockjs.js"></script>
+	<script src="http://cdn.bootcss.com/stomp.js/2.3.3/stomp.js"></script>
+	<script src="/js/tucao.js"></script>
+	  
 	  <script type="text/javascript">
 	$(window).on('load', function () {
 		$('.selectpicker').selectpicker({'selectedText': 'cat'});
@@ -29,7 +38,7 @@
   <script src="js/baidutj.js"></script>
   <meta name="baidu-site-verification" content="9tW0kmA9it" />
    </head>
-   <body class="">
+   <body class="" onkeydown="iset(event)" onload="_roll.mLeft(-1)">
    	<div class="container">
    		<h3></h3>
 		<nav class="navbar navbar-default" role="navigation">
@@ -68,6 +77,31 @@
 			</div><!-- /.row -->
 		</div>
 		<br/>
+		
+		<div class="container text-center">
+			<marquee direction="left" scrollamount="3" behaviour="scroll" onmouseover=stop() onmouseout=start()>
+				<span id="roll0" onmousemove="onRoll(0);" class="roll_txt" style="margin-left:20%;"></span>
+			</marquee>
+			<marquee direction="left" scrollamount="3" behaviour="scroll" onmouseover=stop() onmouseout=start()>
+				<span id="roll1" onmousemove="onRoll(1);" class="roll_txt" style="margin-left:20%;"></span>
+			</marquee>
+			<marquee direction="left" scrollamount="3" behaviour="scroll" onmouseover=stop() onmouseout=start()>
+				<span id="roll2" onmousemove="onRoll(2);" class="roll_txt" style="margin-left:20%;"></span>
+			</marquee>
+			<marquee direction="left" scrollamount="3" behaviour="scroll" onmouseover=stop() onmouseout=start()>
+				<span id="roll3" onmousemove="onRoll(3);" class="roll_txt" style="margin-left:20%;"></span>
+			</marquee>
+			<marquee direction="left" scrollamount="3" behaviour="scroll" onmouseover=stop() onmouseout=start()>
+				<span id="roll4" onmousemove="onRoll(4);" class="roll_txt" style="margin-left:20%;"></span><br/>
+			</marquee>
+			<div style="text-align: center;">
+				<form action="/" onsubmit="return check()">
+					<span class="" style="visibility:hidden;" id="dvCompute"></span><br/>
+					<input class="" onkeyup="resize()" type="text" id="input"
+						style="visibility:hidden;width: 0px;" />
+				</form>
+			</div><br/><br/>
+		</div>
 		
 		<div class="container text-center">
 			© Copyright 2016 IT黑名单 Inc.All Rights Reserved. <a href="http://www.miitbeian.gov.cn">豫ICP备15018592号-2</a>

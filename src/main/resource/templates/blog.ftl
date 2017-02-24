@@ -49,11 +49,19 @@
 	<div class=" container">
 		
 		<p class="text-center">${article.title}</p>
-		<h6 class="text-center"><small>${article.author} ${article.createTime}</small></h6>
+		<h6 class="text-center">
+			<small>
+			<#if article.author==""><a href="http://www.itblacklist.cn/" title="IT黑名单">IT黑名单</a>
+			<#else>${article.author}
+			</#if>
+			 ${article.createTime}</small>
+		</h6>
 		<br/>
 		${article.content}
 		<br/>
-		${article.source}
+		<#if article.source=="">转载请注明来源【<a href="http://www.itblacklist.cn/" title="IT黑名单">IT黑名单</a>】
+		<#else>${article.source}
+		</#if>
 	</div>
 	
 	<div class="container">
