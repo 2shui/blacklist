@@ -5,17 +5,20 @@
       <title>博客--IT黑名单</title>
       <meta name="fragment" content="!">
       <meta name="robots" content="index,follow" />
-      <meta name="keywords" content="IT黑名单,黑名单,培训机构黑名单,公司黑名单,企业黑名单" />
+      <meta name="keywords" content="IT黑名单,黑名单,培训机构黑名单,公司黑名单,企业黑名单,北京,上海,广州,深圳,成都，大连" />
 	  <meta name="description" content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
       
       <link rel="icon" type="image/x-icon" href="/favicon.ico">
 	  <link href="${site}/css/bootstrap.min.css" rel="stylesheet">
+	  <style type="text/css">
+	  	.hot_title{text-overflow: ellipsis;word-break: break-all;
+	  		white-space: nowrap;overflow: hidden;margin-bottom:10px;}
+	  </style>
 	  
 	  <script src="${site}/js/jquery.min.js"></script>
 	  <script src="${site}/js/bootstrap.min.js"></script>
 	  <script src="${site}/js/angular.min.js"></script>
-	  <script type="text/javascript">
-  </script>
+	  
   <script src="${site}/js/baidutj.js"></script>
    </head>
    <body class="">
@@ -61,6 +64,19 @@
 				</#list>
 			</div>
 			<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+				<div class="sidebar-module sidebar-module-inset">
+					<div class="panel panel-success">
+						<div class="panel-heading">热门文章</div>
+						<div class="panel-body">
+							<#list hot as h>
+							<a class="col-sm-12 hot_title" title="${h.title}"
+								href='http://blog.itblacklist.cn/${h.createTime?string("yyyyMMdd")}/${h.id?c}.html'>
+								${h.title}
+							</a><br/>
+							</#list>
+						</div>
+					</div>
+				</div>
 				<div class="sidebar-module sidebar-module-inset">
 					<img src="http://img.itblacklist.cn/20161130/1480487508328.jpg" 
 						class="img-responsive" title="IT黑名单--www.itblacklist.cn">

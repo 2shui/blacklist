@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -254,9 +255,17 @@ public class WechatService {
 		articles.forEach(article->{
 			article.setSource(df.format(article.getCreateTime()));
 		});
+		Collections.sort(articles, new Comparator<BlogArticle> () {
+			@Override
+			public int compare(BlogArticle o1, BlogArticle o2) {
+				return o1.getAccessNum() - o2.getAccessNum();
+			}
+		});
+		List<BlogArticle> hot = articles.subList(0, 5);
 		Map<String, Object> ftlMap = new HashMap<String, Object>();
 		ftlMap.put("articles", articles);
 		ftlMap.put("site", FreemarkerConfig.site);
+		ftlMap.put("hot", hot);
 		FreemarkerUtils.analysisTemplate(null, "index.html", ftlMap, "blogList.ftl", null);
 		return baseTextResponse(map).replace("###MSG###", "操作成功！");
 	}
