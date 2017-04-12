@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>吐槽--IT黑名单</title>
+<meta name="fragment" content="!">
+<meta name="robots" content="index,follow" />
+<meta name="keywords" content="IT黑名单,黑名单,培训机构黑名单,公司黑名单,企业黑名单" />
+<meta name="description"
+	content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<style type="text/css">
+.input-text {
+	height: 38px;
+	border-left: 0px;
+	border-top: 0px;
+	border-right: 0px;
+	border-bottom: 1px;
+	border-radius: 5px; solid #000;
+	font-size: 30px;
+}
+.foot {
+	position: fixed;
+	_position: absolute;
+	bottom: 0px;
+	_bottom: 0px;
+	_margin-top: expression(this.style.pixelHeight + document.documentElement.scrollTop);
+	left: 0px;
+	right: 0px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.content {
+	font-size: 30px
+}
+.p-text {
+	font-size: 22px
+}
+#dvCompute {
+	position: absolute;
+	visibility: hidden;
+}
+</style>
+
+<script src="http://www.itblacklist.cn/js/jquery.min.js"></script>
+<script src="http://www.itblacklist.cn/js/jquery.md5.js"></script>
+<script src="http://www.itblacklist.cn/js/cookie.js"></script>
+<script src="http://cdn.bootcss.com/sockjs-client/1.1.1/sockjs.js"></script>
+<script src="http://cdn.bootcss.com/stomp.js/2.3.3/stomp.js"></script>
+<script type="text/javascript">
+	var stompClient = null;
+	var socket = new SockJS('/tweet');
+	stompClient = Stomp.over(socket);
+	stompClient.connect({}, function (frame) {
+		stompClient.subscribe('/user/topic/getting', function (greeting) {
+			if(''!=JSON.parse(greeting.body).msg) {
+				writeToHtml(JSON.parse(greeting.body).user +':'+ JSON.parse(greeting.body).msg);
+			}
+		});
+		stompClient.subscribe('/topic/resay', function (greeting) {
+			if(''!=JSON.parse(greeting.body).msg) {
+				writeToHtml(JSON.parse(greeting.body).user +':'+ JSON.parse(greeting.body).msg);
+			}
+		});
+	  });
+	  
+	function disconnect() {
+		if (stompClient != null) {
+			stompClient.disconnect();
+			stompClient = null;
+		}
+		console.log("Disconnected");
+	}
+	function sendMsg(msg) {
+		var _u = getCookie('u');
+		if(null==_u)
+			_u = $.md5(navigator.appVersion+new Date().getTime());
+		setCookie('u', _u, 1000*60*5);
+		if(socket.readyState != 1){
+			socket.close();
+			socket = new SockJS('/tweet');
+			stompClient = Stomp.over(socket);
+			stompClient.connect({}, function (frame) {
+			stompClient.subscribe('/user/topic/getting', function (greeting) {
+				if(''!=JSON.parse(greeting.body).msg) {
+					writeToHtml(JSON.parse(greeting.body).user +':'); writeToHtml(JSON.parse(greeting.body).msg);
+				}
+			});
+			stompClient.subscribe('/topic/resay', function (greeting) {
+				if(''!=JSON.parse(greeting.body).msg) {
+					writeToHtml(JSON.parse(greeting.body).user +':'); writeToHtml(JSON.parse(greeting.body).msg);
+				}
+			});
+		  });
+		  setTimeout(function(){
+			stompClient.send("/app/say", {}, JSON.stringify({'msg': msg,'uid':_u}));sleep(50);// user say and show msg
+			stompClient.send("/app/get", {}, JSON.stringify({'msg': msg,'uid':_u}));// user get xiaoi
+		  },50*3);
+		}else {
+			stompClient.send("/app/say", {}, JSON.stringify({'msg': msg,'uid':_u}));sleep(50);// user say and show msg
+			stompClient.send("/app/get", {}, JSON.stringify({'msg': msg,'uid':_u}));// user get xiaoi
+		}
+	}
+	  
+	function writeToHtml(msg) {
+		var w = Compute(msg, 'p-text');
+		var s = $('<p class="p-text" style="background:#F8C301;width:'+w.w+'px;"></p>').text(msg);
+		$("#body").append(s);
+	} 
+	  function sleep(d){for(var t=Date.now();Date.now()-t<=d;);}
+	  
+	  function Compute(v='',s='content') {
+	       var d = document.getElementById('dvCompute');
+	       d.setAttribute('class', s);
+	       d.innerHTML = v;
+	       return { w: d.offsetWidth, h: d.offsetHeight };
+	   }
+	  function iset(e) {
+		document.getElementById('input').focus();
+	}
+	function resize() {
+		var w = Compute($("#input").val());
+		$("#input").attr('style','width:'+w.w+'px;')
+	}
+	function check() {
+		var msg = $('#input').val();
+		sendMsg(msg);
+		$('#input').val('');
+		resize();
+		return false;
+	}
+  </script>
+
+</head>
+<body class="" style="" onkeydown="iset(event)">
+<!-- 
+<div class="container text-center">
+			<marquee direction="left" scrollamount="3" behaviour="scroll" onmouseover=stop() onmouseout=start()>
+				<span id="roll0" onmousemove="onRoll(0);" class="roll_txt" style="margin-left:20%;"></span>
+			</marquee>
+			<marquee direction="left" scrollamount="3" behaviour="scroll" onmouseover=stop() onmouseout=start()>
+				<span id="roll1" onmousemove="onRoll(1);" class="roll_txt" style="margin-left:20%;"></span>
+			</marquee>
+			<marquee direction="left" scrollamount="3" behaviour="scroll" onmouseover=stop() onmouseout=start()>
+				<span id="roll2" onmousemove="onRoll(2);" class="roll_txt" style="margin-left:20%;"></span>
+			</marquee>
+			<marquee direction="left" scrollamount="3" behaviour="scroll" onmouseover=stop() onmouseout=start()>
+				<span id="roll3" onmousemove="onRoll(3);" class="roll_txt" style="margin-left:20%;"></span>
+			</marquee>
+			<marquee direction="left" scrollamount="3" behaviour="scroll" onmouseover=stop() onmouseout=start()>
+				<span id="roll4" onmousemove="onRoll(4);" class="roll_txt" style="margin-left:20%;"></span><br/>
+			</marquee>
+			<div style="text-align: center;">
+				<form action="/" onsubmit="return check()">
+					<span class="" style="visibility:hidden;" id="dvCompute"></span><br/>
+					<input class="" onkeyup="resize()" type="text" id="input"
+						style="visibility:hidden;width: 0px;" />
+				</form>
+			</div><br/><br/>
+		</div>
+ -->
+
+	<div class="content" id="dvCompute"></div>
+	<div id="body" style="margin: 0 auto; width: 80%;"></div>
+	<div class="foot" style="text-align: center;">
+		<form action="/" onsubmit="return check()">
+			<input onkeyup="resize()" class="input-text" type="text" id="input"
+				style="width: 1px;" />
+		</form>
+	</div>
+	<script>
+	</script>
+</body>
+</html>

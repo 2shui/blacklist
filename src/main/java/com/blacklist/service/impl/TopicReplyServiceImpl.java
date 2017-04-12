@@ -1,6 +1,8 @@
 package com.blacklist.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +46,22 @@ public class TopicReplyServiceImpl implements TopicReplyService {
 	@Transactional
 	public int down(Long id) {
 		return replyRepo.down(id);
+	}
+
+	@Override
+	public Map<Long, TopicReply> getCountNum(List<Long> topicIds) {
+		Map<Long, TopicReply> result = new HashMap<Long, TopicReply> ();
+		@SuppressWarnings("unchecked")
+		List<Object[]> list = replyRepo.getCountNumByTopic(topicIds);
+		list.forEach(obj -> {
+			Object[] arr = obj;
+			TopicReply reply = new TopicReply();
+			reply.setTopicId(Long.valueOf(arr[0].toString()));
+			reply.setUpNum(Integer.valueOf(arr[2].toString()));
+			reply.setDownNum(Integer.valueOf(arr[3].toString()));
+			result.put(Long.valueOf(arr[1].toString()), reply);
+		});
+		return result;
 	}
 	
 }

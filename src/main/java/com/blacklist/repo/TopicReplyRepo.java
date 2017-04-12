@@ -22,4 +22,12 @@ public interface TopicReplyRepo extends JpaRepository<TopicReply, Long> {
 	@Modifying
 	@Query(value = "update it_topic_reply t set t.down_num = t.down_num+1 where t.id=:id", nativeQuery = true)
 	public int down(@Param("id")Long id);
+	
+	/**
+	 * @param topicIds
+	 * @return count(1),topic_id,sum(up_num),sum(down_num)
+	 */
+	@Query(value="select count(1),topic_id,sum(up_num),sum(down_num) from it_topic_reply r"
+			+ " where r.topic_id in ?1 group by r.topic_id", nativeQuery=true)
+	public List getCountNumByTopic(List<Long> topicIds);
 }

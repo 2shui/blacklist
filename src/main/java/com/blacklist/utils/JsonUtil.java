@@ -9,8 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * 类功能描述: Json工具类
  *
  * @version 1.0
- * @author 12519
- * @createDate 2016年8月4日 上午10:20:59
+ * @author 
+ * @createDate 
  */
 public final class JsonUtil {
 

@@ -12,6 +12,7 @@ import com.blacklist.bean.BaseResponse;
 import com.blacklist.config.WebConfig;
 import com.blacklist.domain.Topic;
 import com.blacklist.domain.enums.TopicEnum;
+import com.blacklist.server.TopicSortServer;
 import com.blacklist.service.TopicReplyService;
 import com.blacklist.service.TopicService;
 import com.blacklist.utils.RequestValidator;
@@ -29,6 +30,8 @@ public class TopicConroller {
 	TopicService topicService;
 	@Autowired
 	TopicReplyService topicReplyService;
+	@Autowired
+	TopicSortServer topicSortServer;
 	
 	/**
 	 * @param req
@@ -36,7 +39,7 @@ public class TopicConroller {
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public BaseResponse checkExpert(BaseRequest req, Topic topic) {
+	public BaseResponse add(BaseRequest req, Topic topic) {
 		if(!RequestValidator.nullValueValidator(topic.getId())) {
 			return BaseResponse.forbidden(req.getTsno(), "非法请求");
 		}
@@ -60,7 +63,7 @@ public class TopicConroller {
 		}
 		List<Topic> list = topicService.search(new String[]{WebConfig.id, WebConfig.city, WebConfig.company}, key, 10);
 		if(list.size()<1) {
-			
+			list = topicService.findByStatus(1);
 		}
 		return BaseResponse.success(req.getTsno()).setResponse(list);
 	}
@@ -82,5 +85,18 @@ public class TopicConroller {
 		}
 		topicService.viewPage(id);
 		return BaseResponse.success(req.getTsno());
+	}
+	
+	/**
+	 * 获取热门爆料
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("/hot")
+	public BaseResponse hot(BaseRequest req) {
+		List<Topic> list = topicService.findByStatus(TopicEnum.Status.NORMAL.getValue());
+		if (!list.isEmpty())
+			list = topicSortServer.sort(list);
+		return BaseResponse.success(req.getTsno()).setResponse(list);
 	}
 }

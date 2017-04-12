@@ -1,6 +1,7 @@
 package com.blacklist.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.blacklist.domain.TopicReply;
 
@@ -15,4 +16,6 @@ public interface TopicReplyService {
 	public int up(Long id);
 	
 	public int down(Long id);
+	
+	public Map<Long, TopicReply> getCountNum(List<Long> topicIds);
 }

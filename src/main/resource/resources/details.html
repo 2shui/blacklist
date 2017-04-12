@@ -1,71 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="myCtrl as vm">
    <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <title>IT黑名单</title>
       <meta name="fragment" content="!">
-      <meta name="robots" content="noindex" />
-      <meta name="keywords" content="IT黑名单,黑名单,培训机构黑名单,公司黑名单,企业黑名单" />
+      <meta name="keywords" content="IT黑名单,黑名单,培训机构黑名单,公司黑名单,企业黑名单,北京,上海,广州,深圳,成都，大连" />
 	  <meta name="description" content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
-      
-      <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+	  <link rel="icon" type="image/x-icon" href="/favicon.ico">
 	  <link href="/css/bootstrap.min.css" rel="stylesheet">
-	  <link rel="stylesheet" type="text/css" href="/css/bootstrap-select.css">
-	  <link rel="stylesheet" type="text/css" href="/css/bootstrap-markdown.min.css">
+	  <style type="text/css">
+	  	.roll_txt{text-align:left;white-space:nowrap; display:block;}
+	  </style>
 	  
 	  <script src="/js/jquery.min.js"></script>
 	  <script src="/js/bootstrap.min.js"></script>
-	  <script src="/js/bootstrap-select.js"></script>
-	  <script src="/js/markdown.js"></script>
-	  <script src="/js/bootstrap-markdown.js"></script>
-	  <script src="/js/to-markdown.js"></script>
-	  <script src="/js/city.js"></script>
 	  <script src="/js/angular.min.js"></script>
-	  <script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
-	  <!-- var returnCitySN = {"cip": "183.6.154.130", "cid": "440100", "cname": "广东省广州市"}; -->
-	  <script type="text/javascript">
-	$(window).on('load', function () {
-		$('.selectpicker').selectpicker({'selectedText': 'cat'});
-    });
-  </script>
-  <script src="/js/baidutj.js"></script>
+	  <script src="/js/city.js"></script>
+	  <script src="/js/baidutj.js"></script>
    </head>
    <body class="">
-   	<div class="container">
-   		<h3></h3>
-		<nav class="navbar navbar-default" role="navigation">
-			<div class="container-fluid"><div class="col-lg-3"></div>
-				<div class="navbar-header col-lg-1">
-					<a class="navbar-brand active" href="http://www.itblacklist.cn/">首页</a>
-				</div>
-				<div class="col-lg-7">
-					<ul class="nav navbar-nav col-lg-12">
-						<li class=""><a href="http://blog.itblacklist.cn/">博 客</a></li>
-						<li class=""><a href="javaScript:void(0);" data-toggle="modal" data-target="#myModal"">爆 料</a></li>
-						<li class=""><a href="http://www.itblacklist.cn/question.html">常 见 问 题</a></li>
-						<li class=""><a href="http://www.itblacklist.cn/almanac.html">程 序 员 老 皇 历</a></li>
-						<li class=""><a href="http://www.itblacklist.cn/">反 馈</a></li>
-						<li class=""><a href="http://tucao.itblacklist.cn/">吐 槽</a></li>
-					</ul>
-				</div><div class="col-lg-1"></div>
-			</div>
-		</nav>
-   	</div>
+   <div ng-include="'/top.html'"></div>
    	
 	<div class="container">
 		<div class="form-group">
-			
-			<span class="col-sm-12 text-right" id="sApp" ng-app="sApp" ng-controller="sCtrl">
+			<span class="col-sm-12 text-right">
 				<form class="form-inline">
 					<input type="text" ng-model="name" placeholder="公司名" class="form-control">
-					<button class="btn btn-default" ng-click="submit()" type="button">
+					<button class="btn btn-default" ng-click="search()" type="button">
 						Search!
 					</button>
 				</form>
 			</span>
 		</div>
 		<br/>
-		<div id="contentApp" ng-app="contentApp" ng-controller="contentCtrl">
+		<div>
 			<h3 class="">{{topic.sketch}}——{{topic.company}}</h3>
 			<div class="ng-binding" ng-bind-html="topic.intro|to_trusted"></div>
 		</div>
@@ -75,7 +44,7 @@
 		<code>当事人一人之言，或有失公允，请理性看待！</code><br/>
 		<span>本文链接：http://www.itblacklist.cn/details/</span><span id="con-uri"></span>
 	</div>
-	<div id="commentApp" ng-app="commentApp" ng-controller="commentCtrl" class="container">
+	<div class="container">
 		<table class="table table-striped">
 			<tr ng-repeat="r in list"><td>
 				<code>{{r.citySN}}网友--{{r.time|date:'yyyy-MM-dd HH:mm:ss'}}</code><br/>
@@ -86,139 +55,14 @@
 			</td></tr>
 		</table>
 		<textarea class="bt-md" data-provide="markdown" rows="10"></textarea>
-		<button type="button" ng-click="submit()" class="btn btn-primary">提交</button>
+		<button type="button" ng-click="reply()" class="btn btn-primary">提交</button>
 	</div>
 	
-	<div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
-			 <div class="modal-content">
-				<div class="modal-body">success!</div>
-			</div>
-		</div>
-	</div>
+	<div ng-include="'/footer.html'"></div>
+	<ng-include src="'/modal.html'"></ng-include>
 	
-	<div class="container">
-		<div class="container text-center">
-			© Copyright 2016 IT黑名单 Inc.All Rights Reserved. <a href="http://www.miitbeian.gov.cn">豫ICP备15018592号-2</a>
-		</div>
-	</div>
-	<script>
-	function getURLParameter(name) {
-		return new RegExp('\\d+').exec(window.location.pathname)[0];
-		//return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
-	}
-	</script>
-	<script src="/js/details.js"></script>
-	<script>$("#con-uri").html(getURLParameter('t'));
-		var sApp = angular.module('sApp',[]);
-		sApp.controller('sCtrl', function($scope){
-			$scope.submit = function() {
-				if(typeof($scope.name) != "undefined") {
-					window.location.href=encodeURI('/s?wd='+$scope.name);
-				}
-			}
-		});
-		var contentApp = angular.module('contentApp',[]);
-		contentApp.controller('contentCtrl', function($scope, $http){
-			$scope.t = getURLParameter('t');
-			$scope.topic = {};
-			$http({
-				method:'post',
-				url:'/topic/details',
-				data:{'tsno':new Date().getTime(),'id':$scope.t},
-				headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
-				transformRequest:function(data){return $.param(data);}
-			}).success(function(data){
-				if("100"==data.code) {
-					$scope.topic = data.response;
-				} else if("404"==data.code) {
-					alert("无效的ID");
-					window.location.href=encodeURI('/');
-				}
-			});
-		}).filter(  
-			    'to_trusted', ['$sce', function ($sce) {  
-			        return function (text) {  
-			            return $sce.trustAsHtml(text);  
-			        }  
-			    }]  
-			)  ;
-		var commentApp = angular.module('commentApp',[]);
-		commentApp.controller('commentCtrl',function($scope, $http){
-			$scope.t = getURLParameter('t');
-			$scope.list = [];
-			$http({
-				method:'post',
-				url:'/reply/comments',
-				data:{'tsno':new Date().getTime(),'id':$scope.t},
-				headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
-				transformRequest:function(data){return $.param(data);}
-			}).success(function(data){
-				if("100"==data.code) {
-					var res = data.response;
-					for(var i=0;i<res.length;i++) {
-						var comment = {};
-						comment.id = res[i].id;
-						comment.citySN = res[i].citySN;
-						comment.time = res[i].time;
-						comment.intro = res[i].intro;
-						comment.upNum = res[i].upNum;
-						comment.downNum = res[i].downNum;
-						$scope.list[i] = comment;
-					}
-				}
-			});
-			$scope.submit = function(){
-				var message = $('.bt-md').data('markdown').parseContent();
-				$http({
-					method:'post',
-					url:'/reply/reply',
-					data:{'tsno':new Date().getTime(),'topicId':$scope.t,'ip':returnCitySN.cip,
-							'citySN':returnCitySN.cname,'intro':message},
-					headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
-					transformRequest:function(data){return $.param(data);}
-				}).success(function(data){
-					var msg = data.desc;
-					if("100"==data.code) {
-						var res = data.response;
-						$scope.list[$scope.list.length] = res;
-						$('.bt-md').data('markdown').setContent('');
-						
-						msg = 'success!';
-					}
-					$("#myModal").modal('hide');
-					$("#msgModal .modal-body").html(msg);
-					$("#msgModal").modal();
-				});
-			}
-			$scope.up = function(t) {
-				up(t);
-				for(var i=0;i<$scope.list.length;i++){
-					if(t==$scope.list[i].id) {
-						$scope.list[i].upNum += 1;
-						break;
-					}
-				}
-			}
-			$scope.down = function(t) {
-				down(t);
-				for(var i=0;i<$scope.list.length;i++){
-					if(t==$scope.list[i].id) {
-						$scope.list[i].downNum += 1;
-						break;
-					}
-				}
-			}
-		}).filter(
-			'to_trusted', ['$sce', function ($sce) {
-				return function(text){
-					return $sce.trustAsHtml(text);
-				}
-			}]
-		);
-		angular.bootstrap(document.getElementById("sApp"), ['sApp']);
-		angular.bootstrap(document.getElementById("contentApp"), ['contentApp']);
-		angular.bootstrap(document.getElementById("commentApp"), ['commentApp']);
-	</script>
+	<script src="/js/app/details.js"></script>
+	<script src="/js/app/detailsApp.js"></script>
+	<script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 </body>
 </html>

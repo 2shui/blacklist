@@ -39,6 +39,8 @@ import com.blacklist.repo.TopicRepo;
 import com.blacklist.service.BlogArticleService;
 import com.blacklist.service.TopicService;
 import com.blacklist.utils.FreemarkerUtils;
+import com.blacklist.utils.HttpClient;
+import com.blacklist.utils.JsonUtil;
 import com.blacklist.utils.LuceneIKUtil;
 import com.blacklist.utils.Lunar;
 import com.blacklist.utils.SHA1;
@@ -62,7 +64,7 @@ public class WechatService {
 	
 	private final Map<String, String> days = new HashMap<String, String>();
 	{
-		days.put("母后", "0216");
+		days.put("母后", "0217");
 		days.put("泰山", "0430");
 		days.put("兮兮", "0810");
 		days.put("莉莉", "0906");
@@ -255,19 +257,48 @@ public class WechatService {
 		articles.forEach(article->{
 			article.setSource(df.format(article.getCreateTime()));
 		});
+		List<BlogArticle> list = new ArrayList<BlogArticle>(articles);
 		Collections.sort(articles, new Comparator<BlogArticle> () {
 			@Override
 			public int compare(BlogArticle o1, BlogArticle o2) {
-				return o1.getAccessNum() - o2.getAccessNum();
+				return o2.getAccessNum() - o1.getAccessNum();
 			}
 		});
 		List<BlogArticle> hot = articles.subList(0, 5);
 		Map<String, Object> ftlMap = new HashMap<String, Object>();
-		ftlMap.put("articles", articles);
+		ftlMap.put("articles", list);
 		ftlMap.put("site", FreemarkerConfig.site);
 		ftlMap.put("hot", hot);
 		FreemarkerUtils.analysisTemplate(null, "index.html", ftlMap, "blogList.ftl", null);
 		return baseTextResponse(map).replace("###MSG###", "操作成功！");
+	}
+	
+	/**
+	 * 推送博客内容
+	 * @param map
+	 * @param command
+	 * @return
+	 */
+	private String funSendBlog(Map<String, String> map, String command) {
+		Long id = Long.parseLong(command.split(" ")[1]);
+		BlogArticle article = articleRepo.findOne(id);
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+		String now = df.format(article.getCreateTime());
+		
+		Map<String, String> data = new HashMap<String, String> ();
+		data.put("content", article.getContent());
+		data.put("contentShow", article.getTitle());
+		data.put("image", "http://img.itblacklist.cn/20161130/1480487508328.jpg");
+		data.put("keyword", "JAVA");
+		data.put("title", article.getTitle());
+		data.put("userId", "100");
+		data.put("userName", "<a href='http://www.itblacklist.cn/' target='_blank'>IT黑名单</a>");
+		data.put("transferUrl", "http://blog.itblacklist.cn/"+now+"/"+article.getId()+".html");
+		Map<String, String> params = new HashMap<String, String> ();
+		params.put("article", JsonUtil.toString(data));
+		
+		String result = HttpClient.doPost("http://article.battcn.com/article/save", params);
+		return baseTextResponse(map).replace("###MSG###", result);
 	}
 	
 	/**
@@ -338,7 +369,8 @@ public class WechatService {
 				"cg#s#{id}#{state}:修改状态\n"+
 				"sb {id}:静态化blog\n"+
 				"sbl:静态化blog列表\n"+
-				"日历:查询关注日期";
+				"日历:查询关注日期\n"+
+				"推送博客 {id}:推送博客";
 		return baseTextResponse(map).replace("###MSG###", help);
 	}
 	
@@ -402,6 +434,8 @@ public class WechatService {
 				return funFindFllowDate(map);
 			} else if("help".equals(content)) {
 				return funHelp(map);
+			} else if(content.matches("推送博客 \\d+")) {
+				return funSendBlog(map, content);
 			} else {
 				return buildNotSupportResponse(map);
 			}
