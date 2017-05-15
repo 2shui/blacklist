@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.blacklist.bean.BaseRequest;
 import com.blacklist.bean.BaseResponse;
+import com.blacklist.domain.enums.TopicEnum;
 import com.blacklist.repo.BlogArticleRepo;
+import com.blacklist.repo.TopicRepo;
 import com.blacklist.server.IndexServer;
 import com.blacklist.service.BlogArticleService;
 import com.blacklist.service.TopicService;
@@ -42,6 +44,8 @@ public class AdminConroller {
 	BlogArticleService blogArticleService;
 	@Autowired
 	BlogArticleRepo articleRepo;
+	@Autowired
+	TopicRepo topicRepo;
 	
 	@RequestMapping("test")
 	@ResponseBody
@@ -50,23 +54,30 @@ public class AdminConroller {
 		if ("127.0.0.1".equals(clientIp) || "localhost".equals(clientIp)
 				|| "0:0:0:0:0:0:0:1".equals(clientIp) || "120.24.186.80".equals(clientIp)) {
 			
-			String appKey = "UQRBtq0bABWE";
-			String appSecret = "C1OwfTVWafqVZ1vbZUWc";
-			//String question = "笑话";
-			String exampleFile = "";
-			
-			AskRequest askRequest = new AskRequest(appKey, appSecret, question,
-					Constant.SENIOR_TYPE, null, Constant.WEIXIN_PLATFORM);
-			AskService askService = CloudServiceFactory.getInstance()
-					.createAskService();
-			askService.init(null);
-			AskResponse askResponse = null;
 			try {
-				askResponse = askService.ask(askRequest);
-				return askResponse.getContent();
-			} catch (CloudNotInitializedException e) {
-				e.printStackTrace();
+				LuceneIKUtil.getInstance().createIndex(
+						indexServer.build(topicRepo.findByStatus(TopicEnum.Status.NORMAL.getValue())), true);
+			} catch (Exception e1) {
+				e1.printStackTrace();
 			}
+			
+//			String appKey = "UQRBtq0bABWE";
+//			String appSecret = "C1OwfTVWafqVZ1vbZUWc";
+//			//String question = "笑话";
+//			String exampleFile = "";
+//			
+//			AskRequest askRequest = new AskRequest(appKey, appSecret, question,
+//					Constant.SENIOR_TYPE, null, Constant.WEIXIN_PLATFORM);
+//			AskService askService = CloudServiceFactory.getInstance()
+//					.createAskService();
+//			askService.init(null);
+//			AskResponse askResponse = null;
+//			try {
+//				askResponse = askService.ask(askRequest);
+//				return askResponse.getContent();
+//			} catch (CloudNotInitializedException e) {
+//				e.printStackTrace();
+//			}
 			
 		}
 		return "ok";

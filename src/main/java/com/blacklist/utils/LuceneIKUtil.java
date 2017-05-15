@@ -15,6 +15,7 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -23,7 +24,6 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.blacklist.config.WebConfig;
@@ -104,7 +104,7 @@ public class LuceneIKUtil {
 		IndexReader indexReader = DirectoryReader.open(directory);
 		IndexSearcher searcher = new IndexSearcher(indexReader);
 		MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, analyzer);
-		Query query = parser.parse(key);
+		Query query = parser.parse(QueryParser.escape(key));
 		TopDocs docs = searcher.search(query, num);
 		if(docs.totalHits < 1) {
 			indexReader.close();

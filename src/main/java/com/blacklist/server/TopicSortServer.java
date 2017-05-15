@@ -1,6 +1,7 @@
 package com.blacklist.server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -57,13 +58,15 @@ public class TopicSortServer {
 		list.forEach(topic -> {
 			topic.setContact(String.valueOf(getScore(topic, map)));
 		});
-		Collections.sort(list, new Comparator<Topic>() {
+		List<Topic> result = new ArrayList<Topic>();
+		result.addAll(list);
+		Collections.sort(result, new Comparator<Topic>() {
 			@Override
 			public int compare(Topic o1, Topic o2) {
 				return o2.getContact().compareTo(o1.getContact());
 			}
 		});
-		return list;
+		return result;
 	}
 
 	private double getScore(Topic topic, Map<Long, TopicReply> map) {

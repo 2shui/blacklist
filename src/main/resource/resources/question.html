@@ -1,44 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="myCtrl as vm">
    <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <title>常见问题--IT黑名单</title>
-      <meta name="keywords" content="IT黑名单,黑名单,培训机构黑名单,公司黑名单,企业黑名单" />
+      <title>IT黑名单</title>
+      <meta name="fragment" content="!">
+      <meta name="keywords" content="IT黑名单,黑名单,培训机构黑名单,公司黑名单,企业黑名单,北京,上海,广州,深圳,成都，大连" />
 	  <meta name="description" content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
-      
-      <link rel="icon" type="image/x-icon" href="/favicon.ico">
-	  <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+	  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+	  <link href="css/bootstrap.min.css" rel="stylesheet">
+	  <style type="text/css">
+	  	.roll_txt{text-align:left;white-space:nowrap; display:block;}
+	  </style>
 	  
 	  <script src="/js/jquery.min.js"></script>
 	  <script src="/js/bootstrap.min.js"></script>
-	  
-  <script src="/js/baidutj.js"></script>
+	  <script src="/js/angular.min.js"></script>
+	  <script src="/js/city.js"></script>
+	  <script src="/js/baidutj.js"></script>
    </head>
    <body class="">
-   	<div class="container">
-   		<h3></h3>
-		<nav class="navbar navbar-default" role="navigation">
-			<div class="container-fluid"><div class="col-lg-3"></div>
-				<div class="navbar-header col-lg-1">
-					<a class="navbar-brand" href="http://www.itblacklist.cn/">首页</a>
-				</div>
-				<div class="col-lg-7">
-					<ul class="nav navbar-nav col-lg-12">
-						<li class=""><a href="http://blog.itblacklist.cn/">博 客</a></li>
-						<li class=""><a href="http://www.itblacklist.cn/">爆 料</a></li>
-						<li class="active"><a href="http://www.itblacklist.cn/question.html">常 见 问 题</a></li>
-						<li class=""><a href="http://www.itblacklist.cn/almanac.html">程 序 员 老 皇 历</a></li>
-						<li class=""><a href="http://www.itblacklist.cn/">反 馈</a></li>
-						<li class=""><a href="http://tucao.itblacklist.cn/">吐 槽</a></li>
-					</ul>
-				</div><div class="col-lg-1"></div>
-			</div>
-		</nav>
-   	</div>
-   	
-	<div class="container">
-		
-		<div class="row col-lg-4 col-lg-offset-4">
+   <div ng-include="'/top.html'"></div>
+	
+	<div class="container1">
+		<div class="row col-lg-8 col-md-8 col-sm-12 col-lg-offset-4 col-md-offset-4">
 			<h2>劳动关系常见问题</h2>
 			<ul>
 				<li data-toggle="modal" data-target="#noQuit">
@@ -57,13 +42,10 @@
 					<a title="IT黑名单-ITBLACKLIST.CN" href="javascript:void(0);">公司提出降薪</a></li>
 			</ul>
 		</div>
-	</div>
+		
 	
-	<div class="container">
-	</div>
-	
-	
-	<div class="modal fade" id="noQuit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+<div class="modal fade" id="noQuit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			 <div class="modal-content">
 				<div class="modal-body">
@@ -174,13 +156,38 @@
 	</div>
 	
 	
-	<div class="container">
-		<div class="container text-center">
-			© Copyright 2016 IT黑名单 Inc.All Rights Reserved. <a href="http://www.miitbeian.gov.cn">豫ICP备15018592号-2</a>
-		</div>
+	
+		<div ng-include="'/footer.html'"></div>
+		<ng-include src="'/modal.html'"></ng-include>
 	</div>
 	
-	<script>
-	</script>
+	<script src="/js/app/indexApp.js"></script>
 </body>
 </html>
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -292,7 +292,7 @@ public class WechatService {
 		data.put("keyword", "JAVA");
 		data.put("title", article.getTitle());
 		data.put("userId", "100");
-		data.put("userName", "<a href='http://www.itblacklist.cn/' target='_blank'>IT黑名单</a>");
+		data.put("userName", "IT黑名单");
 		data.put("transferUrl", "http://blog.itblacklist.cn/"+now+"/"+article.getId()+".html");
 		Map<String, String> params = new HashMap<String, String> ();
 		params.put("article", JsonUtil.toString(data));

@@ -7,6 +7,12 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.util.Map;
 
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +23,17 @@ import org.slf4j.LoggerFactory;
 public class HttpClient {
 	private static Logger log = LoggerFactory.getLogger(HttpClient.class);
 
-	public static String doGet(String url, Map<String, String> parameters) {
-		// TODO
+	public static String doGet(String url) {
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		HttpGet get = new HttpGet(url);
+		try {
+			HttpResponse resp = client.execute(get);
+			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				return EntityUtils.toString(resp.getEntity());
+			}
+		} catch (Exception e) {
+			log.error("client by get error:{}", e);
+		}
 		return null;
 	}
 

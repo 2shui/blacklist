@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -58,12 +60,12 @@ public class TopicConroller {
 	
 	@RequestMapping("/s")
 	public BaseResponse search(BaseRequest req, String key) {
-		if(RequestValidator.nullValueValidator(key)) {
+		if(RequestValidator.stringEmptyValidator(key)) {
 			return BaseResponse.forbidden(req.getTsno(), "查询数据为空");
 		}
 		List<Topic> list = topicService.search(new String[]{WebConfig.id, WebConfig.city, WebConfig.company}, key, 10);
 		if(list.size()<1) {
-			list = topicService.findByStatus(1);
+			//list = topicService.findByStatus(1);
 		}
 		return BaseResponse.success(req.getTsno()).setResponse(list);
 	}
@@ -94,9 +96,12 @@ public class TopicConroller {
 	 */
 	@RequestMapping("/hot")
 	public BaseResponse hot(BaseRequest req) {
-		List<Topic> list = topicService.findByStatus(TopicEnum.Status.NORMAL.getValue());
+		List<Topic> list = topicService.getLimit(50, new Sort(Direction.DESC, "id"));
 		if (!list.isEmpty())
 			list = topicSortServer.sort(list);
+		if(list.size() > 5) {
+			list = list.subList(0, 5);
+		}
 		return BaseResponse.success(req.getTsno()).setResponse(list);
 	}
 }

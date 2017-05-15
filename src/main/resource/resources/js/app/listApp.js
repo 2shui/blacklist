@@ -64,12 +64,14 @@ myApp.controller('myCtrl', function($scope, $http) {
 	$scope.details = function(i) {
 		window.location.href=encodeURI('/details/'+i);
 	}
+	
+	// topic.s
 	$scope.kw = getURLParameter('wd');
 	$scope.list = [];
 	$http({
 		method:'post',
 		url:'/topic/s',
-		data:{'tsno':new Date().getTime(),'key':$scope.vm.kw},
+		data:{'tsno':new Date().getTime(),'key':$scope.kw},
 		headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
 		transformRequest:function(data){return $.param(data);}
 	}).success(function(data){
@@ -82,6 +84,29 @@ myApp.controller('myCtrl', function($scope, $http) {
 				topic.sketch = res[i].sketch;
 				topic.company = res[i].company;
 				$scope.list[i] = topic;
+			}
+		}
+	});
+	// topic.hot
+	$scope.hot = [];
+	$http({
+		method:'post',
+		url:'/topic/hot',
+		data:{'tsno':new Date().getTime()},
+		headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
+		transformRequest:function(data){return $.param(data);}
+	}).success(function(data){
+		console.log(data);
+		if("100"==data.code) {
+			var res = data.response;
+			for(var i=0;i<res.length;i++) {
+				var topic = {};
+				topic.ref = res[i].id;
+				topic.sketch = res[i].sketch;
+				topic.company = res[i].company;
+				topic.accessNum = res[i].accessNum;
+				topic.city = res[i].city;
+				$scope.hot[i] = topic;
 			}
 		}
 	});

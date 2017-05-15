@@ -11,6 +11,8 @@
 	  <link href="css/bootstrap.min.css" rel="stylesheet">
 	  <style type="text/css">
 	  	.roll_txt{text-align:left;white-space:nowrap; display:block;}
+	  	.list_txt{font-size:18px;color:#999999;}
+	  	.hot_txt{font-size:18px;}
 	  </style>
 	  
 	  <script src="/js/jquery.min.js"></script>
@@ -35,15 +37,28 @@
 			</span>
 		</div>
 		
-		<div>
-			<h3 class="text-center">关于{{kw}}的公司</h3>
-			<p class="" ng-repeat="r in list" style="text-indent:2em;">
-				<a href="javascript:void(0);" ng-click="details(r.ref)">
-					{{r.sketch}}——{{r.company}}
-				</a>
-			</p>
-			<div ng-if="list.length<1">
-				<p>暂无{{kw}}的数据，提交请点击<a href="#" data-toggle="modal" data-target="#myModal">这里</a></p>
+		<h3 class="text-center">关于{{kw}}的公司</h3>
+		<div class="row">
+			<div class="col-sm-9">
+				<p class="" ng-repeat="r in list" style="text-indent:2em;">
+					<span class="col-sm-2"></span>
+					<a class="list_txt" href="javascript:void(0);" ng-click="details(r.ref)">
+						○ {{r.sketch}}——{{r.company}}
+					</a>
+				</p>
+				<div ng-if="list.length<1">
+					<p class="list_txt">
+						暂无{{kw}}的数据，提交请点击<a href="#" data-toggle="modal" data-target="#myModal">这里</a>
+					</p>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<h3 class="text-center">热门爆料</h3>
+				<p ng-repeat="h in hot">
+					<a class="hot_txt" title="{{h.city}}{{h.company}}-{{h.sketch}}" href="javascript:void(0);" ng-click="details(h.ref)">
+						{{h.sketch}} ({{h.accessNum}})
+					</a>
+				</p>
 			</div>
 		</div>
 	</div>
