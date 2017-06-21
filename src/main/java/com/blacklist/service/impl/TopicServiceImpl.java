@@ -2,6 +2,7 @@ package com.blacklist.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -11,7 +12,6 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,20 +21,30 @@ import org.springframework.transaction.annotation.Transactional;
 import com.blacklist.config.WebConfig;
 import com.blacklist.domain.Topic;
 import com.blacklist.repo.TopicRepo;
+import com.blacklist.server.IndexServer;
 import com.blacklist.service.TopicService;
 import com.blacklist.utils.LuceneIKUtil;
-import com.blacklist.utils.SMSProducer;
 
 @Service("topicService")
 public class TopicServiceImpl implements TopicService {
 	private Logger log = LoggerFactory.getLogger(TopicServiceImpl.class);
 	@Autowired
 	private TopicRepo topicRepo;
+	@Autowired
+	private IndexServer indexServer;
 	
 	@Override
 	public Topic add(Topic topic) {
 		topic = topicRepo.saveAndFlush(topic);
-		SMSProducer.getInstance().send(topic);
+		// alimq 收费了
+		//SMSProducer.getInstance().send(topic);
+		try {
+			LuceneIKUtil.getInstance().createIndex(
+					indexServer.build(Arrays.asList(topic)), false);
+		} catch (Exception e) {
+			log.error("Add indexed error:{}", e);
+		}
+		
 		return topic;
 	}
 	

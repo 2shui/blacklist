@@ -241,7 +241,7 @@ public class Lunar {
 	 * @return 阴历日期
 	 * @throws Exception
 	 */
-	public static String solarToLunar(Date solarDate) throws Exception {
+	public static String solarToLunar(Date solarDate, boolean needTag) throws Exception {
 		int i;
 		int temp = 0;
 		int lunarYear;
@@ -290,11 +290,13 @@ public class Lunar {
 		offset += temp;
 		lunarMonth = i;
 		lunarDay = offset;
-
-		return "" + lunarYear
-				+ (lunarMonth < 10 ? "0" + lunarMonth : lunarMonth)
+		
+		return "" + lunarYear + "-"
+				+ (lunarMonth < 10 ? "0" + lunarMonth : lunarMonth) + "-"
 				+ (lunarDay < 10 ? "0" + lunarDay : lunarDay)
-				+ (leapMonthFlag & (lunarMonth == leapMonth) ? "+" : "-");
+				+ (needTag ? 
+						((leapMonthFlag && (lunarMonth == leapMonth)) ? "+" : "-")
+						: "");
 	}
 
 //	public static void main(String[] args) {

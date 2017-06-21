@@ -33,6 +33,7 @@ public class SMSConsumer implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg0) throws Exception {
+		/*
 		Properties properties = new Properties();
 		properties.put(PropertyKeyConst.ConsumerId, AliMQConfig.consumerId);
 		properties.put(PropertyKeyConst.AccessKey, AliMQConfig.accessKey);
@@ -48,6 +49,7 @@ public class SMSConsumer implements CommandLineRunner {
 			}
 		});
 		consumer.start();
+		*/
 	}
 	
 	private void indexed(Topic topic) {

@@ -1,6 +1,8 @@
 package com.blacklist.cotroller;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +16,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.blacklist.bean.BaseResponse;
+import com.blacklist.config.MiniProgramConfig;
 import com.blacklist.enums.WechatType;
 import com.blacklist.server.IndexServer;
 import com.blacklist.server.WechatService;
 import com.blacklist.service.TopicService;
+import com.blacklist.utils.HttpClient;
+import com.blacklist.utils.HttpsClient;
 
 @RestController
 @SpringBootApplication
@@ -60,6 +68,20 @@ public class WechatController {
 				response.getWriter().write(input);
 			}
 		}
+	}
+	
+	@RequestMapping("/miniProgram/onlogin")
+	public BaseResponse miniProgram(String code) {
+		Map<String, String> param = new HashMap<String, String> ();
+		param.put("appid", MiniProgramConfig.appid);
+		param.put("secret", MiniProgramConfig.appSecret);
+		param.put("js_code", code);
+		param.put("grant_type", "authorization_code");
+		HttpsClient client = new HttpsClient();
+		String res = client.doPost("https://api.weixin.qq.com/sns/jscode2session", param, "utf-8");
+		// {"session_key":"lOZrl0l9xXQRybCYMor+0w==","expires_in":7200,"openid":"xxx"}
+		JSONObject jsonObject = JSON.parseObject(res);
+		return BaseResponse.success(""+new Date().getTime()).setResponse(jsonObject.get("openid"));
 	}
 
 }

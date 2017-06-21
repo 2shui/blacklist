@@ -73,12 +73,10 @@ public class WechatService {
 		days.put("豆丁", "1216");
 	}
 
-	public String getToken() throws IOException {
+	public String getToken(String appid, String secret) throws IOException {
 		if ((System.currentTimeMillis() / 1000 - WechatConfig.expiresTime) > 7000) {
 			String pathUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="
-					+ WechatConfig.appid
-					+ "&secret="
-					+ WechatConfig.secret;
+					+ appid + "&secret=" + secret;
 			URL url = new URL(pathUrl);
 			HttpURLConnection httpConn = (HttpURLConnection) url
 					.openConnection();
@@ -181,6 +179,15 @@ public class WechatService {
 	
 	private String buildError(Map<String, String> map, String err) {
 		return baseTextResponse(map).replace("###MSG###", err);
+	}
+	
+	private String buildEvent(Map<String, String> map) {
+		String eventKey = map.get("EventKey");
+		if("ITBLACKLIST_MINIPROGRAM".equals(eventKey)) {
+			return "";
+		}else {
+			return buildWelcome(map);
+		}
 	}
 
 	/**

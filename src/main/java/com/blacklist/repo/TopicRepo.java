@@ -31,5 +31,5 @@ public interface TopicRepo extends JpaRepository<Topic, Long> {
 	
 	@Modifying
 	@Query(value="update it_topic t set t.status=:status where t.id=:id", nativeQuery=true)
-	public int updateStatus(Long id, Integer status);
+	public int updateStatus(@Param("id") Long id, @Param("status") Integer status);
 }
