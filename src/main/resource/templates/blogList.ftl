@@ -77,11 +77,24 @@
 						</div>
 					</div>
 				</div>
-				<div class="sidebar-module sidebar-module-inset">
-					<img src="http://img.itblacklist.cn/20161130/1480487508328.jpg" 
-						class="img-responsive" title="IT黑名单--www.itblacklist.cn">
-					http://www.itblacklist.cn/ 公众号
-					
+				<div class="sidebar-module sidebar-module-inset text-center">
+					<div class="col-sm-6 col-sm-offset-3">
+						<img src="http://img.itblacklist.cn/20170621/1498025729074.png" 
+							class="img-responsive" title="赞助站长-IT黑名单--www.itblacklist.cn">
+						赞助站长
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-6">
+							<img src="http://img.itblacklist.cn/20161130/1480487508328.jpg" 
+								class="img-responsive" title="公众号-IT黑名单--www.itblacklist.cn">
+							公众号
+						</div>
+						<div class="col-sm-6">
+							<img src="http://img.itblacklist.cn/20170621/1498025694676.jpg" 
+								class="img-responsive" title="小程序-IT黑名单--www.itblacklist.cn">
+							小程序
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
