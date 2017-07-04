@@ -139,7 +139,30 @@ myApp.controller('myCtrl', function($scope, $http) {
 }).filter(
 	'to_trusted', ['$sce', function ($sce) {
 		return function(text){
-			return $sce.trustAsHtml(text);
+			var el = $('<div></div>');
+			el.html(text);
+			var _list = $("[href^='http://']",el);
+			$.each(_list, function() {
+				var _url = $(this).attr('href');
+				if(!testStr(_url)) {
+					console.log(_url);
+					$(this).attr('href', 'http://www.1.com/');
+				}
+			});
+			_list = $("[src^='http://']",el);
+			$.each(_list, function() {
+				var _url = $(this).attr('src');
+				if(!testStr(_url)) {
+					console.log(_url);
+					$(this).attr('src', 'http://www.1.com/');
+				}
+			});
+			return $sce.trustAsHtml(el.html());
+			
+			//return $sce.trustAsHtml(text);
 		}
 	}]
 );
+function testStr(url) {
+	return url.indexOf('itblacklist.cn') != -1 || (new RegExp("jpg$")).test(url) || (new RegExp("png$")).test(url) || (new RegExp("gif$")).test(url) || (new RegExp("jpeg$")).test(url);
+}

@@ -19,27 +19,32 @@
 	  <script src="/js/city.js"></script>
 	  <script src="/js/baidutj.js"></script>
    </head>
-   <body class="">
+   <body class="" style="background:#f6f6f6;">
    <div ng-include="'/top.html'"></div>
 	
 	<div class="container text-center">
 		<h2>Bad luck, U come here.</h2>
 		<div class="row center-block">
-			<div class="row col-lg-4 col-lg-offset-4">
+			<div class="row col-lg-6 col-lg-offset-3">
 				<div class="navbar-text">
 					<div class="input-group">
 					   <input id="search" type="text" ng-model="name" placeholder="search like:xx科技有限公司" class="col-lg-4 form-control">
 					   <span class="input-group-btn">
-						  <button class="btn btn-default" type="button" ng-click="search()">
-							 Search!
+						  <button class="btn btn-default" type="button" ng-click="search('title')">
+							 Search
+						  </button>
+						  <button class="btn btn-default" type="button" ng-click="search('city')">
+							 Search City
 						  </button>
 					   </span>
 					</div><!-- /input-group -->
 				</div>
 			</div><!-- /.row -->
 		</div>
-		<br/>
 		
+		
+		<div class="text-left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码农小工具</div>
+		<div ng-include="'/dateFormat.html'"></div>
 		<div ng-include="'/footer.html'"></div>
 		<ng-include src="'/modal.html'"></ng-include>
 	</div>

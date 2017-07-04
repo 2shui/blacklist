@@ -1,9 +1,9 @@
 var myApp = angular.module('myApp',[]);
 myApp.controller('myCtrl', function($scope, $http) {
 	$scope.citys = citys;
-	$scope.search = function() {
+	$scope.search = function(type) {
 		if(typeof($scope.name) != "undefined") {
-			window.location.href=encodeURI('/s?wd='+$scope.name);
+			window.location.href=encodeURI('/s?wd='+$scope.name+'&type='+type);
 		}
 	}
 	// feedback.add

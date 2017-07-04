@@ -108,7 +108,7 @@ public class TopicServiceImpl implements TopicService {
 	@Override
 	public List<Topic> getLimit(Integer num, Sort sort) {
 		Pageable page = new PageRequest(0, num, sort);
-		return topicRepo.findAll(page).getContent();
+		return topicRepo.findByStatus(1, page);
 	}
 	
 	

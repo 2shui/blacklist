@@ -30,8 +30,8 @@ public class RemindConroller {
 			return BaseResponse.forbidden(req.getTsno(), "参数不完整");
 		}
 		List<ProgramRemind> reminded = remindService.findByStatusAndOpenId(1, remind.getOpenId());
-		if (reminded.size() >= 20) {
-			return BaseResponse.forbidden(req.getTsno(), "每人最多设置20个提醒");
+		if (reminded.size() >= 12) {
+			return BaseResponse.forbidden(req.getTsno(), "每人最多设置12个提醒");
 		}
 		remind.setStatus(1);
 		remindService.save(remind);

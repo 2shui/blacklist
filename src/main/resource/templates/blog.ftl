@@ -34,12 +34,23 @@
 				</div>
 				<div class="col-lg-7">
 					<ul class="nav navbar-nav col-lg-12">
-						<li class="active"><a href="http://blog.itblacklist.cn/">博 客</a></li>
-						<li class=""><a href="http://www.itblacklist.cn/">爆 料</a></li>
+						<li class=""><a href="http://blog.itblacklist.cn/">博 客</a></li>
+						<li class=""><a href="javaScript:void(0);" data-toggle="modal" data-target="#myModal"">爆 料</a></li>
 						<li class=""><a href="http://www.itblacklist.cn/question.html">常 见 问 题</a></li>
-						<li class=""><a href="http://www.itblacklist.cn/almanac.html">程 序 员 老 皇 历</a></li>
-						<li class=""><a href="http://www.itblacklist.cn/">反 馈</a></li>
-						<li class=""><a href="http://tucao.itblacklist.cn/">吐 槽</a></li>
+						<li class="">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								工具
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="http://www.itblacklist.cn/almanac.html">程 序 员 老 皇 历</a></li>
+								<li class="divider"></li>
+								<li><a href="http://df.itblacklist.cn/">日期格式化</a></li>
+								<li class="divider"></li>
+								<li><a href="http://tucao.itblacklist.cn/">吐 槽</a></li>
+							</ul>
+						</li>
+						<li class=""><a href="javaScript:void(0);" data-toggle="modal" data-target="#feedbackModal">反 馈</a></li>
 					</ul>
 				</div><div class="col-lg-1"></div>
 			</div>

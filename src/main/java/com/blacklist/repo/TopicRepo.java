@@ -3,6 +3,7 @@ package com.blacklist.repo;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +22,8 @@ public interface TopicRepo extends JpaRepository<Topic, Long> {
 	public Topic findByIdAndStatus(Long id, Integer status);
 	
 	public List<Topic> findByStatus(Integer status);
+	
+	public List<Topic> findByStatus(Integer status, Pageable page);
 	
 	public List<Topic> findByCompanyLike(String company);
 	

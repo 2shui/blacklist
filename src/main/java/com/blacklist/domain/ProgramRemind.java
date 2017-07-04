@@ -61,6 +61,11 @@ public class ProgramRemind implements Serializable {
      * 状态 1-正常 2-删除
      */
     private Integer status;
+    
+    /**
+     * 用户信息
+     * */
+    private String userInfo;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -152,6 +157,15 @@ public class ProgramRemind implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	@Column(name = "user_info")
+	public String getUserInfo() {
+		return userInfo;
+	}
+
+	public void setUserInfo(String userInfo) {
+		this.userInfo = userInfo;
 	}
 
 }

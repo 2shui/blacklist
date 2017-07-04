@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blacklist.config.FreemarkerConfig;
 import com.blacklist.config.SourceDescConfig;
@@ -219,7 +220,10 @@ public class WechatService {
 				"id"));
 		StringBuffer sb = new StringBuffer("count:" + count + "\t\n");
 		list.forEach(topic -> {
-			sb.append(topic.getSketch() + "#" + topic.getCompany() + "\t\n");
+			sb.append(topic.getId() + "-" + topic.getCity() + "-" + topic.getCompany() + "\t\n");
+			sb.append(topic.getSketch() + "\t\n");
+			sb.append(topic.getIntro() + "\t\n");
+			sb.append("==============\t\n");
 		});
 		return baseTextResponse(map).replace("###MSG###", sb.toString());
 	}
@@ -451,6 +455,7 @@ public class WechatService {
 		}
 	}
 
+	@Transactional
 	public String buildResponse(Map<String, String> map,
 			WechatType type) {
 		switch (type) {

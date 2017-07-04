@@ -83,7 +83,8 @@ function down(t){
 }
 
 var b=(function(){
-	var t=getURLParameter('t');
+	//var t=getURLParameter('t');
+	var t = getURLID();
 	if(window.localStorage && auto(localStorage.a,t)){
 		$.ajax({
 			type:'POST',

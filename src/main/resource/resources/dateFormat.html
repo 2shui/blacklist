@@ -1,0 +1,92 @@
+<div class="panel panel-warning text-left">
+	<div class="panel-heading">
+		·输入期望要转换的文本<br/>
+		·ctrl+enter格式化
+	</div>
+	<div class="panel-body"><!-- jq_watermark &#13;&#10;   json格式化，如：{a:1}  -->
+		<textarea id="d_input" onkeydown="ddd(event)" class="form-control" rows="14"
+			 placeholder="日期格式化，如：2017-06-23 09:29:42
+unicode转中文，如：\u4f60\u597d\uff0c\u4e16\u754c
+中文转unicode，如：u 你好 //注意u和中文之间有空格"></textarea>
+	</div>
+</div>
+<script>
+function ddd(e){
+	var re_uu = /\u([0-9a-z]{4})+/g;
+	var re_uh = /u\s\S+/g;
+	var re_df = /\d{4}-\d{1,2}-\d{1,2}\s\d{1,2}\:\d{1,2}\:\d{1,2}/g
+	
+	var str = document.getElementById("d_input").value;
+	//var keynum = window.event ? e.keyCode : e.which;
+	if (13 == e.keyCode && e.ctrlKey){
+		if (re_uu.test(str)) {
+			u2h();
+		} else if (re_uh.test(str)) {
+			h2u();
+		} else if (re_df.test(str)) {
+			var t = $("#d_input");
+			t.val(str+'\n\n【JS】'
+				+'\n中文获取时间戳\t===>\tnew Date(Date.parse("'+str+'".replace(/-/g, "/"))).getTime();'
+				+'\n【Java】'
+				+'\n汉字转Date\t\t===>\tnew SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("'+str+'");'
+				+'\nDate转汉字\t\t===>\tnew SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());'
+				+'\n【oracle】'
+				+'\nDate转汉字\t\t===>\tto_char(sysdate,\'yyyy-mm-dd hh24:mi:ss\')'
+				+'\n汉字转Date\t\t===>\tto_date(\''+str+'\',\'yyyy-mm-dd hh24:mi:ss\') //月日不足10补0'
+				+'\n【mysql】'
+				+'\nDate转汉字\t\t===>\tdate_format(now(),\'%Y%m%d%H%i%s\')'
+				+'\n汉字转Date\t\t===>\tstr_to_date(\''+str.replace(/-/g, "")+'\', \'%Y%m%d %H:%i:%s\') //月日不足10补0'
+				);
+		} else {
+			t.val(str+'\n\nSomething is error...');
+		}
+	}
+}
+
+
+var GB2312UnicodeConverter={
+	ToUnicode:function(str){
+		var txt= escape(str).toLocaleLowerCase().replace(/%u/gi,'\\u');
+		//var txt= escape(str).replace(/([%3F]+)/gi,'\\u');
+		return txt.replace(/%7b/gi,'{').replace(/%7d/gi,'}').replace(/%3a/gi,':').replace(/%2c/gi,',').replace(/%27/gi,'\'').replace(/%22/gi,'"').replace(/%5b/gi,'[').replace(/%5d/gi,']').replace(/%3D/gi,'=').replace(/%20/gi,' ').replace(/%3E/gi,'>').replace(/%3C/gi,'<').replace(/%3F/gi,'?').replace(/%5c/gi,'\\');//
+ 	}
+	,ToGB2312:function(str){
+		return unescape(str.replace(/\\u/gi,'%u'));
+	}
+};
+
+function u2h(){
+	var txtA = document.getElementById("d_input");
+	var text = txtA.value;
+	text = text.trim();
+	// text = text.replace(/\u/g,"");
+	txtA.value = GB2312UnicodeConverter.ToGB2312(text);	 
+}
+
+function h2u(){
+	var txtA = document.getElementById("d_input");
+	var text = txtA.value;
+	text = text.replace('u ', '');
+	text = text.trim();
+	// text = text.replace(/\u/g,"");
+	txtA.value = GB2312UnicodeConverter.ToUnicode(text);
+}
+</script>
+<!-- 
+<div class="panel panel-danger text-left">
+	<div class="panel-heading">ss</div>
+	<div class="panel-body">11</div>
+</div>
+<div class="panel panel-default text-left">
+	<div class="panel-heading">ss</div>
+	<div class="panel-body">11</div>
+</div>
+<div class="panel panel-success text-left">
+	<div class="panel-heading">ss</div>
+	<div class="panel-body">11</div>
+</div>
+<div class="panel panel-info text-left">
+	<div class="panel-heading">ss</div>
+	<div class="panel-body">11</div>
+</div>
+ -->
