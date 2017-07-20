@@ -4,6 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <title>${title}--IT黑名单</title>
       <meta name="fragment" content="!">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="robots" content="index,follow" />
       <meta name="keywords" content="IT黑名单,黑名单,培训机构黑名单,公司黑名单,企业黑名单,北京,上海,广州,深圳,成都，大连" />
 	  <meta name="description" content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
@@ -23,16 +24,23 @@
     });
   </script>
   <script src="${site}/js/baidutj.js"></script>
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<script>
+	  (adsbygoogle = window.adsbygoogle || []).push({
+	    google_ad_client: "ca-pub-8781284468242009",
+	    enable_page_level_ads: true
+	  });
+	</script>
    </head>
    <body class="">
    	<div class="container">
    		<h3></h3>
 		<nav class="navbar navbar-default" role="navigation">
-			<div class="container-fluid"><div class="col-lg-3"></div>
-				<div class="navbar-header col-lg-1">
+			<div class="container-fluid">
+				<div class="navbar-header col-lg-1 col-xs-2">
 					<a class="navbar-brand" href="http://www.itblacklist.cn/">首页</a>
 				</div>
-				<div class="col-lg-7">
+				<div class="col-lg-7 col-xs-10">
 					<ul class="nav navbar-nav col-lg-12">
 						<li class=""><a href="http://blog.itblacklist.cn/">博 客</a></li>
 						<li class=""><a href="javaScript:void(0);" data-toggle="modal" data-target="#myModal"">爆 料</a></li>
@@ -52,7 +60,7 @@
 						</li>
 						<li class=""><a href="javaScript:void(0);" data-toggle="modal" data-target="#feedbackModal">反 馈</a></li>
 					</ul>
-				</div><div class="col-lg-1"></div>
+				</div>
 			</div>
 		</nav>
    	</div>

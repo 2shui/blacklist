@@ -258,6 +258,26 @@ public class WechatService {
 	}
 	
 	/**
+	 * 静态化blog sba || static blog all
+	 * @param
+	 */
+	private String funStaticBlog(Map<String, String> map) {
+		List<BlogArticle> list = articleRepo.findAll();
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+		Map<String, Object> ftlMap = new HashMap<String, Object>();
+		list.forEach(blog->{
+			String path = df.format(blog.getCreateTime());
+			ftlMap.put("title", blog.getTitle());
+			ftlMap.put("article", blog);
+			ftlMap.put("site", FreemarkerConfig.site);
+			ftlMap.put("path", path);
+			FreemarkerUtils.analysisTemplate(path, blog.getId()+".html", ftlMap, null, null);
+		});
+		
+		return baseTextResponse(map).replace("###MSG###", "操作成功！");
+	}
+	
+	/**
 	 * 静态化博客列表页
 	 * @param map
 	 * @return
@@ -265,17 +285,18 @@ public class WechatService {
 	private String funStaticBlogList(Map<String, String> map) {
 		List<BlogArticle> articles = blogArticleService.findAll(new Sort(Direction.DESC, "id"));
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-		articles.forEach(article->{
+		List<BlogArticle> list = new ArrayList<BlogArticle>(articles);
+		list.forEach(article->{
 			article.setSource(df.format(article.getCreateTime()));
 		});
-		List<BlogArticle> list = new ArrayList<BlogArticle>(articles);
-		Collections.sort(articles, new Comparator<BlogArticle> () {
+		
+		Collections.sort(list, new Comparator<BlogArticle> () {
 			@Override
 			public int compare(BlogArticle o1, BlogArticle o2) {
 				return o2.getAccessNum() - o1.getAccessNum();
 			}
 		});
-		List<BlogArticle> hot = articles.subList(0, 5);
+		List<BlogArticle> hot = list.subList(0, 5);
 		Map<String, Object> ftlMap = new HashMap<String, Object>();
 		ftlMap.put("articles", list);
 		ftlMap.put("site", FreemarkerConfig.site);
@@ -379,6 +400,7 @@ public class WechatService {
 				"cl {num}:数据增长\n"+
 				"cg#s#{id}#{state}:修改状态\n"+
 				"sb {id}:静态化blog\n"+
+				"sba:静态化全部blog\n"+
 				"sbl:静态化blog列表\n"+
 				"日历:查询关注日期\n"+
 				"推送博客 {id}:推送博客";
@@ -441,6 +463,8 @@ public class WechatService {
 				return funStaticBlog(map, content);
 			} else if(content.equalsIgnoreCase("sbl")) {
 				return funStaticBlogList(map);
+			} else if(content.equalsIgnoreCase("sba")) {
+				return funStaticBlog(map);
 			} else if(content.equalsIgnoreCase("日历")) {
 				return funFindFllowDate(map);
 			} else if("help".equals(content)) {

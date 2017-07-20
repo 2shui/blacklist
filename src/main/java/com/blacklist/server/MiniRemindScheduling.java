@@ -55,6 +55,7 @@ public class MiniRemindScheduling {
 		try {
 			String lunar = Lunar.solarToLunar(now, false);
 			String lunarWeek = Lunar.solarToLunar(week, false);
+			// TODO short data
 			List<ProgramRemind> list = remindService.getAll(1);
 			needReminds = list.stream().filter(r -> {return check(r, lunar, solar, lunarWeek, solarWeek);})
 					.collect(Collectors.toList());
