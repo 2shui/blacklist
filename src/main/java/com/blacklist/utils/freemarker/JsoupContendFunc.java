@@ -6,11 +6,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
-public class JsoupContendFunc implements TemplateMethodModel {
+public class JsoupContendFunc implements TemplateMethodModelEx {
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object exec(List arg0) throws TemplateModelException {
 		String str = "";

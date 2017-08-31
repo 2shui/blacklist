@@ -10,6 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 public class FreemarkerConfig {
 	public static String ftlPath;
 	public static String htmlPath;
+	public static String waterPath;
 	public static String imgPath;
 	public static String site;
 	public static String imgSite;
@@ -42,6 +43,12 @@ public class FreemarkerConfig {
 	}
 	public static void setImgSite(String imgSite) {
 		FreemarkerConfig.imgSite = imgSite;
+	}
+	public static String getWaterPath() {
+		return waterPath;
+	}
+	public static void setWaterPath(String waterPath) {
+		FreemarkerConfig.waterPath = waterPath;
 	}
 	
 }

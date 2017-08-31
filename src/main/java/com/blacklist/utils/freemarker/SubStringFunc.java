@@ -2,11 +2,12 @@ package com.blacklist.utils.freemarker;
 
 import java.util.List;
 
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
-public class SubStringFunc implements TemplateMethodModel {
+public class SubStringFunc implements TemplateMethodModelEx {
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object exec(List arg0) throws TemplateModelException {
 		Integer begin, end;

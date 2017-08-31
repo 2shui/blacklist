@@ -284,19 +284,18 @@ public class WechatService {
 	 */
 	private String funStaticBlogList(Map<String, String> map) {
 		List<BlogArticle> articles = blogArticleService.findAll(new Sort(Direction.DESC, "id"));
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+//		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+//		articles.forEach(article->{
+//			article.setSource(df.format(article.getCreateTime()));
+//		});
 		List<BlogArticle> list = new ArrayList<BlogArticle>(articles);
-		list.forEach(article->{
-			article.setSource(df.format(article.getCreateTime()));
-		});
-		
-		Collections.sort(list, new Comparator<BlogArticle> () {
+		Collections.sort(articles, new Comparator<BlogArticle> () {
 			@Override
 			public int compare(BlogArticle o1, BlogArticle o2) {
 				return o2.getAccessNum() - o1.getAccessNum();
 			}
 		});
-		List<BlogArticle> hot = list.subList(0, 5);
+		List<BlogArticle> hot = articles.subList(0, 5);
 		Map<String, Object> ftlMap = new HashMap<String, Object>();
 		ftlMap.put("articles", list);
 		ftlMap.put("site", FreemarkerConfig.site);

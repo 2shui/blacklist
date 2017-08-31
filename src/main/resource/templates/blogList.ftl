@@ -79,7 +79,7 @@
 				<#list articles as blog>
 				<div class="panel panel-success" ng-repeat="b in as">
 				    <div class="panel-heading">
-				    	<a href="http://blog.itblacklist.cn/${blog.source}/${blog.id?c}.html" title="${blog.title}--IT黑名单">
+				    	<a href="http://blog.itblacklist.cn/${dateFormat(blog.createTime)}/${blog.id?c}.html" title="${blog.title}--IT黑名单">
 				        <h3 class="panel-title">${blog.title}</h3>
 				        </a>
 				    </div>

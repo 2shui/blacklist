@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.blacklist.config.FreemarkerConfig;
+import com.blacklist.utils.freemarker.DateFormatFunc;
 import com.blacklist.utils.freemarker.JsoupContendFunc;
 import com.blacklist.utils.freemarker.SubStringFunc;
 
@@ -38,6 +39,7 @@ public class FreemarkerUtils {
 				config.setObjectWrapper(new DefaultObjectWrapper());
 				config.setSharedVariable("subStr", new SubStringFunc());
 				config.setSharedVariable("jsoup", new JsoupContendFunc());
+				config.setSharedVariable("dateFormat", new DateFormatFunc());
 			} catch (IOException e) {
 				log.error("freemarker init config error:" + e);
 			}
@@ -56,16 +58,15 @@ public class FreemarkerUtils {
 		}
 	}
 
-	/**
-	 * 默认blog.ftl模板
-	 * */
-	public static void analysisTemplate(String targetPath, String targetFile, Map<?, ?> data,String templateFile, String codeType) {
+	public static void analysisTemplate(String targetPath, String targetFile,
+			Map<?, ?> data, String templateFile, String codeType,
+			Boolean absolutePath) {
 		templateFile = null == templateFile ? "blog.ftl" : templateFile;
 		initTemplate(templateFile, codeType);
 		codeType = null == codeType ? "UTF-8" : codeType;
 		try {
-			String filePath = null == targetPath ? FreemarkerConfig.htmlPath
-					: FreemarkerConfig.htmlPath + "/" + targetPath;
+			String filePath = absolutePath ? targetPath : (null == targetPath ? FreemarkerConfig.htmlPath : 
+										FreemarkerConfig.htmlPath + "/" + targetPath);
 			File f = new File(filePath);
 			if (!f.exists()) {
 				f.mkdirs();
@@ -79,6 +80,13 @@ public class FreemarkerUtils {
 		} catch (TemplateException | IOException e) {
 			log.error("create html file error:" + e);
 		}
+	}
+	
+	/**
+	 * 默认blog.ftl模板
+	 * */
+	public static void analysisTemplate(String targetPath, String targetFile, Map<?, ?> data,String templateFile, String codeType) {
+		analysisTemplate(targetPath, targetFile, data, templateFile, codeType, false);
 	}
 	
 }
