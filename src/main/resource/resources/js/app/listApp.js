@@ -47,6 +47,13 @@ myApp.controller('myCtrl', function($scope, $http) {
 			var msg = data.desc;
 			if("100"==data.code) {
 				msg = 'success!';
+				var createTime = new Date(data.response.createTime);
+				var year = createTime.getFullYear();
+				var month = createTime.getMonth()+1;
+				var day = createTime.getDate();
+				var timePath = '/'+year+(month<10?'0'+month:month)+(day<10?'0'+day:day)+'/'
+				var toUrl = 'http://www.itblacklist.cn/detail'+timePath+data.response.id+'.html';
+				setTimeout("window.location.href='"+toUrl+"'", 3000);
 			}
 			$("#myModal").modal('hide');
 			$("#msgModal .modal-body").html(msg);
@@ -59,10 +66,27 @@ myApp.controller('myCtrl', function($scope, $http) {
 		});
 	}
 	
-	
-	
 	$scope.details = function(i) {
-		window.location.href=encodeURI('/details/'+i);
+		var createTime = undefined;
+		for (var n = 0; n < $scope.list.length; n++) {
+			if ($scope.list[n].ref == i) {
+				createTime = new Date($scope.list[n].createTime);
+				break;
+			}
+		}
+		for (var n = 0; n < $scope.hot.length; n++) {
+			if ($scope.hot[n].ref == i) {
+				createTime = new Date($scope.hot[n].createTime);
+				break;
+			}
+		}
+		
+		var year = createTime.getFullYear();
+		var month = createTime.getMonth() + 1;
+		var day = createTime.getDate();
+		var timePath = '/' + year + (month < 10 ? '0' + month : month) + (day < 10 ? '0' + day : day) + '/';
+		window.location.href = encodeURI('/detail' + timePath + i + '.html');
+		//window.location.href = encodeURI('/details/' + i);
 	}
 	
 	// topic.s
@@ -83,6 +107,7 @@ myApp.controller('myCtrl', function($scope, $http) {
 				topic.ref = res[i].id;
 				topic.sketch = res[i].sketch;
 				topic.company = res[i].company;
+				topic.createTime = res[i].createTime;
 				$scope.list[i] = topic;
 			}
 		}
@@ -106,6 +131,7 @@ myApp.controller('myCtrl', function($scope, $http) {
 				topic.company = res[i].company;
 				topic.accessNum = res[i].accessNum;
 				topic.city = res[i].city;
+				topic.createTime = res[i].createTime;
 				$scope.hot[i] = topic;
 			}
 		}

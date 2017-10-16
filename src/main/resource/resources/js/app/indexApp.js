@@ -44,6 +44,13 @@ myApp.controller('myCtrl', function($scope, $http) {
 			var msg = data.desc;
 			if("100"==data.code) {
 				msg = 'success!';
+				var createTime = new Date(data.response.createTime);
+				var year = createTime.getFullYear();
+				var month = createTime.getMonth()+1;
+				var day = createTime.getDate();
+				var timePath = '/'+year+(month<10?'0'+month:month)+(day<10?'0'+day:day)+'/'
+				var toUrl = 'http://www.itblacklist.cn/detail'+timePath+data.response.id+'.html';
+				setTimeout("window.location.href='"+toUrl+"'", 3000);
 			}
 			$("#myModal").modal('hide');
 			$("#msgModal .modal-body").html(msg);

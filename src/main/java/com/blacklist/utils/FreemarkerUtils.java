@@ -5,12 +5,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.blacklist.config.FreemarkerConfig;
+import com.blacklist.domain.Topic;
 import com.blacklist.utils.freemarker.DateFormatFunc;
 import com.blacklist.utils.freemarker.JsoupContendFunc;
 import com.blacklist.utils.freemarker.SubStringFunc;
@@ -89,4 +92,12 @@ public class FreemarkerUtils {
 		analysisTemplate(targetPath, targetFile, data, templateFile, codeType, false);
 	}
 	
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	public static void staticTopic(Topic topic) {
+		String targetPath = FreemarkerConfig.topicPath + "/" + sdf.format(topic.getCreateTime());
+		String targetFile = topic.getId() + ".html";
+		Map<String, Topic> data = new HashMap<>();
+		data.put("topic", topic);
+		analysisTemplate(targetPath, targetFile, data, "topic.ftl", null, true);
+	}
 }

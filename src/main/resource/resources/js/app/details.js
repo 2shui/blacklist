@@ -1,7 +1,9 @@
 function getURLParameter(name) {
+	if(topicId)return topicId;
 	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 }
 function getURLID() {
+	if(!(typeof(topicId)=="undefined"))return topicId;
 	return new RegExp('\\d+').exec(window.location.pathname)[0];
 }
 $("#con-uri").html(getURLID());

@@ -1,10 +1,13 @@
 package com.blacklist.service.impl;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.lucene.document.Document;
@@ -18,11 +21,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.blacklist.config.FreemarkerConfig;
 import com.blacklist.config.WebConfig;
 import com.blacklist.domain.Topic;
+import com.blacklist.domain.Water;
 import com.blacklist.repo.TopicRepo;
 import com.blacklist.server.IndexServer;
 import com.blacklist.service.TopicService;
+import com.blacklist.utils.FreemarkerUtils;
 import com.blacklist.utils.LuceneIKUtil;
 
 @Service("topicService")
@@ -44,6 +50,7 @@ public class TopicServiceImpl implements TopicService {
 		} catch (Exception e) {
 			log.error("Add indexed error:{}", e);
 		}
+		FreemarkerUtils.staticTopic(topic);
 		
 		return topic;
 	}
@@ -56,10 +63,14 @@ public class TopicServiceImpl implements TopicService {
 			List<Document> documents = index.search(field, key, num);
 			documents.stream().forEach(doc -> {
 				Topic topic = new Topic();
-				topic.setId(Long.parseLong(doc.get(WebConfig.id)));
+				Long id = Long.parseLong(doc.get(WebConfig.id));
+				topic.setId(id);
 				topic.setCompany(doc.get(WebConfig.company));
 				topic.setCity(doc.get(WebConfig.city));
 				topic.setSketch(doc.get(WebConfig.sketch));
+				
+				Topic db = topicRepo.getOne(id);
+				topic.setCreateTime(null == db ? null : db.getCreateTime());
 				topics.add(topic);
 			});
 		} catch (IOException|ParseException e) {

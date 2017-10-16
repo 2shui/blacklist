@@ -18,9 +18,9 @@ public class ReferrerInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		String referer = request.getHeader("Referer");
-		if(StringUtils.isBlank(referer) || !referer.contains(WebConfig.site)){
-			return false;
-		}
+//		if(StringUtils.isBlank(referer) || !referer.contains(WebConfig.site)){
+//			return false;
+//		}
 		
 		return true;
 	}

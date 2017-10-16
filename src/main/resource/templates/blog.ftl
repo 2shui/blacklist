@@ -6,7 +6,7 @@
       <meta name="fragment" content="!">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="robots" content="index,follow" />
-      <meta name="keywords" content="IT黑名单,黑名单,培训机构黑名单,公司黑名单,企业黑名单,北京,上海,广州,深圳,成都，大连" />
+      <meta name="keywords" content="IT黑名单,培训机构,无良公司,黑名单,北京,上海,广州,深圳,成都,大连,武汉" />
 	  <meta name="description" content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
       
       <link rel="icon" type="image/x-icon" href="/favicon.ico">

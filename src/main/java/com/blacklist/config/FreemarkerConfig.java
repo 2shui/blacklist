@@ -9,8 +9,8 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:source.properties")
 public class FreemarkerConfig {
 	public static String ftlPath;
-	public static String htmlPath;
-	public static String waterPath;
+	public static String htmlPath;// 博客地址
+	public static String topicPath;// 详情页地址
 	public static String imgPath;
 	public static String site;
 	public static String imgSite;
@@ -44,11 +44,11 @@ public class FreemarkerConfig {
 	public static void setImgSite(String imgSite) {
 		FreemarkerConfig.imgSite = imgSite;
 	}
-	public static String getWaterPath() {
-		return waterPath;
+	public static String getTopicPath() {
+		return topicPath;
 	}
-	public static void setWaterPath(String waterPath) {
-		FreemarkerConfig.waterPath = waterPath;
+	public static void setTopicPath(String topicPath) {
+		FreemarkerConfig.topicPath = topicPath;
 	}
 	
 }

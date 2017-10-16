@@ -277,6 +277,12 @@ public class WechatService {
 		return baseTextResponse(map).replace("###MSG###", "操作成功！");
 	}
 	
+	private String funStaticTopic(Map<String, String> map) {
+		List<Topic> topics = topicRepo.findByStatus(TopicEnum.Status.NORMAL.getValue());
+		topics.forEach(topic -> FreemarkerUtils.staticTopic(topic));
+		return baseTextResponse(map).replace("###MSG###", "操作成功！");
+	}
+	
 	/**
 	 * 静态化博客列表页
 	 * @param map
@@ -402,7 +408,8 @@ public class WechatService {
 				"sba:静态化全部blog\n"+
 				"sbl:静态化blog列表\n"+
 				"日历:查询关注日期\n"+
-				"推送博客 {id}:推送博客";
+				"推送博客 {id}:推送博客\n"+
+				"sda:静态化全部topic";
 		return baseTextResponse(map).replace("###MSG###", help);
 	}
 	
@@ -466,6 +473,8 @@ public class WechatService {
 				return funStaticBlog(map);
 			} else if(content.equalsIgnoreCase("日历")) {
 				return funFindFllowDate(map);
+			} else if(content.equalsIgnoreCase("sda")) {
+				return funStaticTopic(map);
 			} else if("help".equals(content)) {
 				return funHelp(map);
 			} else if(content.matches("推送博客 \\d+")) {

@@ -6,7 +6,7 @@
       <meta name="fragment" content="!">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="robots" content="index,follow" />
-      <meta name="keywords" content="IT黑名单,黑名单,培训机构黑名单,公司黑名单,企业黑名单,北京,上海,广州,深圳,成都，大连" />
+      <meta name="keywords" content="IT黑名单,培训机构,无良公司,黑名单,北京,上海,广州,深圳,成都,大连,武汉" />
 	  <meta name="description" content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
       
       <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -107,6 +107,13 @@
 					</div>
 				</div>
 				<div class="sidebar-module sidebar-module-inset text-center">
+					<img src="http://img.itblacklist.cn/20170901/1504232320277.jpg" 
+								class="img-responsive" title="小程序-IT黑名单--www.itblacklist.cn">
+							小程序--日程提醒
+					<img src="http://img.itblacklist.cn/20161130/1480487508328.jpg" 
+								class="img-responsive" title="公众号-IT黑名单--www.itblacklist.cn">
+							公众号
+					<!--
 					<div class="col-lg-6 col-lg-offset-3">
 						<img src="http://img.itblacklist.cn/20170621/1498025729074.png" 
 							class="img-responsive" title="赞助站长-IT黑名单--www.itblacklist.cn">
@@ -119,11 +126,13 @@
 							公众号
 						</div>
 						<div class="col-lg-6">
+						http://img.itblacklist.cn/20170901/1504232320277.jpg
 							<img src="http://img.itblacklist.cn/20170621/1498025694676.jpg" 
 								class="img-responsive" title="小程序-IT黑名单--www.itblacklist.cn">
 							小程序
 						</div>
 					</div>
+					-->
 				</div>
 			</div>
 		</div>

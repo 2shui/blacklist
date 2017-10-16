@@ -54,7 +54,8 @@ public class WaterServiceImpl implements WaterService {
 	public List<Water> getList(Long max, Long min, int num) {
 		Sort sort =  new Sort(Direction.DESC, "id");
 		Pageable page = new PageRequest(0, num, sort);
-		return waterRepo.findByIdNotBetween(min, max, page);
+		//return waterRepo.findByIdNotBetween(min, max, page);
+		return null;
 	}
 	
 }

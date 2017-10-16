@@ -2,10 +2,10 @@
 <html ng-app="myApp" ng-controller="myCtrl as vm">
    <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <title>IT黑名单</title>
+      <title>黑名单爆料--${topic.company}--IT黑名单</title>
       <meta name="fragment" content="!">
       <meta name="keywords" content="IT黑名单,培训机构,无良公司,黑名单,北京,上海,广州,深圳,成都,大连,武汉" />
-	  <meta name="description" content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
+	  <meta name="description" content="IT黑名单(http://www.itblacklist.cn/)。要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，WWW.ITBLACKLIST.CN" />
 
 	  <link rel="icon" type="image/x-icon" href="/favicon.ico">
 	  <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -18,15 +18,7 @@
 	  <script src="/js/angular.min.js"></script>
 	  <script src="/js/city.js"></script>
 	  <script src="/js/baidutj.js"></script>
-	  <!-- 
-	  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-	<script>
-	  (adsbygoogle = window.adsbygoogle || []).push({
-	    google_ad_client: "ca-pub-8781284468242009",
-	    enable_page_level_ads: true
-	  });
-	</script>
-	 -->
+	  
    </head>
    <body class="">
    <div ng-include="'/top.html'"></div>
@@ -44,14 +36,17 @@
 		</div>
 		<br/>
 		<div>
-			<h3 class="">{{topic.sketch}}——{{topic.company}}</h3>
+			<h3 class="">${topic.sketch}——${topic.company}</h3>
+			${topic.intro}
+			<!--
 			<div class="ng-binding" ng-bind-html="topic.intro|to_trusted"></div>
+			-->
 		</div>
 	</div>
 	
 	<div class="container">
+		<span>${topic.createTime?string("yyyy-MM-dd HH:mm:ss")}</span><br/>
 		<code>当事人一人之言，或有失公允，请理性看待！</code><br/>
-		<span>本文链接：http://www.itblacklist.cn/details/</span><span id="con-uri"></span>
 
 
 		<div class="bdsharebuttonbox">
@@ -104,6 +99,7 @@
 	<div ng-include="'/footer.html'"></div>
 	<ng-include src="'/modal.html'"></ng-include>
 	
+	<script>var topicId=${topic.id?c};</script>
 	<script src="/js/app/details.js"></script>
 	<script src="/js/app/detailsApp.js"></script>
 	<script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8"></script>

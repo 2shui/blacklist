@@ -13,5 +13,5 @@ public interface WaterRepo extends JpaRepository<Water, Long> {
 	List<Water> findByUrlNotNull();
 	List<Water> findByUrlNull();
 	
-	List<Water> findByIdNotBetween(Long mix, Long min, Pageable page);
+	//List<Water> findByIdNotBetween(Long mix, Long min, Pageable page);
 }

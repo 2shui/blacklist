@@ -53,9 +53,9 @@ public class TopicConroller {
 		topic.setAccessNum(0);
 		topic.setEulogyNum(0);
 		topic.setRefuteNum(0);
-		topicService.add(topic);
+		topic = topicService.add(topic);
 		
-		return BaseResponse.success(req.getTsno());
+		return BaseResponse.success(req.getTsno()).setResponse(topic);
 	}
 	
 	@RequestMapping("/s")
