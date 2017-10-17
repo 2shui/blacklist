@@ -5,7 +5,7 @@
       <title>黑名单爆料--${topic.company}--IT黑名单</title>
       <meta name="fragment" content="!">
       <meta name="keywords" content="IT黑名单,培训机构,无良公司,黑名单,北京,上海,广州,深圳,成都,大连,武汉" />
-	  <meta name="description" content="IT黑名单(http://www.itblacklist.cn/)。要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，WWW.ITBLACKLIST.CN" />
+	  <meta name="description" content="IT黑名单(http://www.itblacklist.cn/)。要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。IT企业黑名单，IT黑企业，IT培训公司黑名单，维护劳动者权益，发现人与企业关系，打造求职通讯录，让求职之路更加顺畅." />
 
 	  <link rel="icon" type="image/x-icon" href="/favicon.ico">
 	  <link href="/css/bootstrap.min.css" rel="stylesheet">
