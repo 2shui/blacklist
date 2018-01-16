@@ -35,4 +35,8 @@ public interface TopicRepo extends JpaRepository<Topic, Long> {
 	@Modifying
 	@Query(value="update it_topic t set t.status=:status where t.id=:id", nativeQuery=true)
 	public int updateStatus(@Param("id") Long id, @Param("status") Integer status);
+	
+	@Query(value="select * from it_topic t WHERE t.id >=((SELECT MAX(id) from it_topic) -(SELECT MIN(id) FROM it_topic)) * RAND() + (SELECT MIN(id) from it_topic) "
+			+ " AND t.city=:city AND t.status=1 LIMIT :lNum", nativeQuery=true)
+	public List<Topic> random(@Param("city") String city, @Param("lNum") Integer lNum);
 }

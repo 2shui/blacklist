@@ -121,6 +121,10 @@ public class TopicServiceImpl implements TopicService {
 		Pageable page = new PageRequest(0, num, sort);
 		return topicRepo.findByStatus(1, page);
 	}
-	
+
+	@Override
+	public List<Topic> random(String city, Integer num) {
+		return topicRepo.random(city, num);
+	}
 	
 }

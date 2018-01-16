@@ -6,7 +6,7 @@
       <meta name="fragment" content="!">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="robots" content="index,follow" />
-      <meta name="keywords" content="IT黑名单,培训机构,无良公司,黑名单,北京,上海,广州,深圳,成都,大连,武汉" />
+      <meta name="keywords" content="IT黑名单,培训机构,骗子公司,黑名单,黑公司,黑企业,北京,上海,广州,深圳,成都,武汉" />
 	  <meta name="description" content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
       
       <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -79,12 +79,12 @@
 				<#list articles as blog>
 				<div class="panel panel-success" ng-repeat="b in as">
 				    <div class="panel-heading">
-				    	<a href="http://blog.itblacklist.cn/${dateFormat(blog.createTime)}/${blog.id?c}.html" title="${blog.title}--IT黑名单">
+				    	<a href="http://blog.itblacklist.cn/${dateFormat(blog.createTime)}/${blog.id?c}.html" title="${jsoup(blog.title)}--IT黑名单">
 				        <h3 class="panel-title">${blog.title}</h3>
 				        </a>
 				    </div>
 				    <div class="panel-body">
-				        ${subStr(jsoup(blog.content), 200)}...
+				        ${subStr(jsoup(blog.content), 150)}...
 				        <div class="text-right"><#-- ${blog.accessNum?c} -->
 				        	${blog.createTime} 阅读数(<span id="n${blog.id?c}">${blog.accessNum?c}</span>)
 				        </div>
@@ -143,6 +143,7 @@
 		<div class="container text-center">
 			© Copyright 2016 IT黑名单 Inc.All Rights Reserved. 
 			<a rel="nofollow" target="_blank" href="http://www.miitbeian.gov.cn">豫ICP备15018592号-2</a>
+			<br/>【友链】<a target="_blank" href="http://www.jair1314.com/">老头子</a> | 【官方Q群】<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=f3c7522e032be4af62090142b19ab3d388b03202760427dbc084801dd2f7bb9b">579489154</a>
 		</div>
 	</div>
 	<script>

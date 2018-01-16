@@ -2,11 +2,11 @@
 <html>
    <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <title>${title}--IT黑名单</title>
+      <title>${jsoup(title)}--IT黑名单</title>
       <meta name="fragment" content="!">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="robots" content="index,follow" />
-      <meta name="keywords" content="IT黑名单,培训机构,无良公司,黑名单,北京,上海,广州,深圳,成都,大连,武汉" />
+      <meta name="keywords" content="IT黑名单,培训机构,骗子公司,黑名单,黑公司,黑企业,北京,上海,广州,深圳,成都,武汉" />
 	  <meta name="description" content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单，BLACKLIST.CN" />
       
       <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -31,6 +31,17 @@
 	    enable_page_level_ads: true
 	  });
 	</script>
+	
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-102733758-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
    </head>
    <body class="">
    	<div class="container">

@@ -102,6 +102,30 @@ myApp.controller('myCtrl', function($scope, $http) {
 			}
 		}
 	});
+	$scope.associated = []
+	$http({
+		method:'post',
+		url:'/topic/associated',
+		data:{'tsno':new Date().getTime(),'id':$scope.t},
+		headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
+		transformRequest:function(data){return $.param(data);}
+	}).success(function(data){
+		if("100"==data.code) {
+			var res = data.response;
+			for(var i=0;i<res.length;i++) {
+				var topic = {};
+				topic.ref = res[i].id;
+				topic.sketch = res[i].sketch;
+				topic.company = res[i].company;
+				topic.accessNum = res[i].accessNum;
+				topic.city = res[i].city;
+				topic.createTime = res[i].createTime;
+				topic.path = res[i].shortPath;
+				$scope.associated[i] = topic;
+			}
+		}
+	});
+	
 	$scope.reply = function(){
 		var message = $('.bt-md').data('markdown').parseContent();
 		$http({

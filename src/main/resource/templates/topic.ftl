@@ -2,10 +2,12 @@
 <html ng-app="myApp" ng-controller="myCtrl as vm">
    <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <title>黑名单爆料--${topic.company}--IT黑名单</title>
+	<link href="shanghai.htm" rel="parent" charset="UTF-8" hreflang="zh-Hans" />
+	  <title>${topic.company}--IT黑名单--IT黑公司查询，打造IT求职通讯录</title>
       <meta name="fragment" content="!">
-      <meta name="keywords" content="IT黑名单,培训机构,无良公司,黑名单,北京,上海,广州,深圳,成都,大连,武汉" />
-	  <meta name="description" content="IT黑名单(http://www.itblacklist.cn/)。要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。IT企业黑名单，IT黑企业，IT培训公司黑名单，维护劳动者权益，发现人与企业关系，打造求职通讯录，让求职之路更加顺畅." />
+      <meta name="keywords" content="IT黑名单,培训机构,骗子公司,黑名单,黑公司,黑企业,北京,上海,广州,深圳,成都,武汉" />
+	  <meta name="description" content="要问公司怎么样，就查IT黑名单！前人爆料，后人弃坑。维护劳动者权益，发现人与企业关系，打造求职通讯录.IT黑名单唯一官方网站，BLACKLIST.CN" />
+	  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
 
 	  <link rel="icon" type="image/x-icon" href="/favicon.ico">
 	  <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -19,6 +21,24 @@
 	  <script src="/js/city.js"></script>
 	  <script src="/js/baidutj.js"></script>
 	  
+	  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<script>
+	  (adsbygoogle = window.adsbygoogle || []).push({
+	    google_ad_client: "ca-pub-8781284468242009",
+	    enable_page_level_ads: true
+	  });
+	</script>
+	
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	
+	  ga('create', 'UA-102733758-1', 'auto');
+	  ga('send', 'pageview');
+	
+	</script>
    </head>
    <body class="">
    <div ng-include="'/top.html'"></div>
@@ -35,6 +55,7 @@
 			</span>
 		</div>
 		<br/>
+		<p hidden>怎么样 薪资 待遇 好不好 黑心 垃圾 招聘 职位</p>
 		<div>
 			<h3 class="">${topic.sketch}——${topic.company}</h3>
 			${topic.intro}
@@ -64,10 +85,11 @@
 			window._bd_share_config = {
 				"common" : {
 					"bdSnsKey" : {},
-					"bdText" : "我在IT黑名单[http://www.itblacklist.cn/]爆料了黑公司，快来吐槽。",
+					"bdText" : "【IT黑名单爆料】${topic.company}-${topic.city}[http://www.itblacklist.cn/]",
+					"bdDesc" : "IT求职避坑，查询求职通讯录，IT黑名单官方网站HTTP://WWW.BLACKLIST.CN/",
 					"bdMini" : "2",
 					"bdMiniList" : false,
-					"bdPic" : "",
+					"bdPic" : "http://img.itblacklist.cn/20161122/1479804218158.jpg",
 					"bdStyle" : "1",
 					"bdSize" : "16"
 				},
@@ -82,6 +104,17 @@
 
 
 	</div>
+	<br/>
+	<div class="container" style="background-color:#DDD;">
+		<p class="text-danger">同城其它被吐槽公司：</p>
+		<p ng-repeat="t in associated" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<a class="hot_txt1" title="{{t.city}}{{t.company}}-{{t.sketch}}" href="{{t.path}}">
+				{{t.sketch}}--({{t.company}})
+			</a>
+		</p>
+	</div>
+	<br/>
+	
 	<div class="container">
 		<table class="table table-striped">
 			<tr ng-repeat="r in list"><td>

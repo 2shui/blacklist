@@ -65,8 +65,8 @@ public class MiniRemindScheduling {
 		needReminds.forEach(remind -> {
 			String lunar = remind.getIsLunar()?"农历":"阳历";
 			String time = remind.getTime();
-			String content = "hi,<br/>今天是"+lunar+time+"，您在小程序中设置了提醒：<b>"
-					+remind.getTitle()+"</b>。<br/>不要忘记这个重要的日子哦~";
+			String content = "hi,<br/>您在小程序中设置了提醒：<b>"
+					+lunar+time+" "+remind.getTitle()+"</b>。<br/>不要忘记这个重要的日子哦~";
 			MailSender.send126(remind.getEmail(), "日程提醒-【日历小二】", content);
 		});
 		

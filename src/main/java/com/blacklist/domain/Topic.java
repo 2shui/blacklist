@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * 主题
@@ -48,6 +49,8 @@ public class Topic implements Serializable {
      * 创建时间
      */
     private Date createTime;
+    @Transient
+    private String shortPath;
 
     /**
      * 简述
@@ -179,6 +182,15 @@ public class Topic implements Serializable {
 
 	public void setRefuteNum(Integer refuteNum) {
 		this.refuteNum = refuteNum;
+	}
+
+	@Transient
+	public String getShortPath() {
+		return shortPath;
+	}
+
+	public void setShortPath(String shortPath) {
+		this.shortPath = shortPath;
 	}
 
 }

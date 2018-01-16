@@ -1,5 +1,6 @@
 package com.blacklist.cotroller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.blacklist.bean.BaseRequest;
 import com.blacklist.bean.BaseResponse;
+import com.blacklist.config.FreemarkerConfig;
 import com.blacklist.config.WebConfig;
 import com.blacklist.domain.Topic;
 import com.blacklist.domain.enums.TopicEnum;
@@ -101,6 +103,27 @@ public class TopicConroller {
 			list = topicSortServer.sort(list);
 		if(list.size() > 5) {
 			list = list.subList(0, 5);
+		}
+		return BaseResponse.success(req.getTsno()).setResponse(list);
+	}
+	
+	/**
+	 * 获取相关城市爆料
+	 * @param req
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/associated")
+	public BaseResponse associated(BaseRequest req, Long id) {
+		Topic topic = topicService.get(id);
+		List<Topic> list = null;
+		if(null!=topic){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			String tempPath = "/detail/##/=.html";
+			list = topicService.random(topic.getCity(), 5);
+			list.stream().forEach(t->{
+				t.setShortPath(tempPath.replace("##", sdf.format(t.getCreateTime())).replace("=", t.getId().toString()));
+			});
 		}
 		return BaseResponse.success(req.getTsno()).setResponse(list);
 	}

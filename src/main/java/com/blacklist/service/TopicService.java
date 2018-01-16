@@ -26,4 +26,6 @@ public interface TopicService {
 	public Integer count(Integer status);
 	
 	public List<Topic> getLimit(Integer num, Sort sort);
+	
+	public List<Topic> random(String city, Integer num);
 }
