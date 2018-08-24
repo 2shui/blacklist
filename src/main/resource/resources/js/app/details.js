@@ -55,7 +55,7 @@ function up(t){
 	if(!window.localStorage || auto(localStorage.b, t)){
 		$.ajax({
 			type:'POST',
-			url:'/reply/up',
+			url:'http://g.itblacklist.cn/reply/up',
 			data:{'id':t},
 			success:function(data){
 				if("100"==data.code){
@@ -71,7 +71,7 @@ function down(t){
 	if(!window.localStorage || auto(localStorage.c, t)){
 		$.ajax({
 			type:'POST',
-			url:'/reply/down',
+			url:'http://g.itblacklist.cn/reply/down',
 			data:{'id':t},
 			success:function(data){
 				if("100"==data.code){
@@ -90,7 +90,7 @@ var b=(function(){
 	if(window.localStorage && auto(localStorage.a,t)){
 		$.ajax({
 			type:'POST',
-			url:'/topic/view',
+			url:'http://g.itblacklist.cn/topic/view',
 			data:{'id':t},
 			success:function(data){
 				if("100"==data.code){

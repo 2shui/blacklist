@@ -11,7 +11,7 @@ myApp.controller('myCtrl', function($scope, $http) {
 		var message = $('.bt-md').data('markdown').parseContent();
 		$http({
 			method:'post',
-			url:'/feedback/add',
+			url:'http://g.itblacklist.cn/feedback/add',
 			data:{'tsno':new Date().getTime(),'content':message,'contact':$scope.vm.contact},
 			headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
 			transformRequest:function(data){return $.param(data);}
@@ -35,7 +35,7 @@ myApp.controller('myCtrl', function($scope, $http) {
 		var message = $('.bt-md').data('markdown').parseContent();
 		$http({
 			method:'post',
-			url:'/topic/add',
+			url:'http://g.itblacklist.cn/topic/add',
 			data:{'tsno':new Date().getTime(),'city':t,'company':$scope.vm.company,
 					'sketch':$scope.vm.sketch,'intro':message,'contact':$scope.vm.contact},
 			headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
@@ -68,7 +68,7 @@ myApp.controller('myCtrl', function($scope, $http) {
 	$scope.topic = {};
 	$http({
 		method:'post',
-		url:'/topic/details',
+		url:'http://g.itblacklist.cn/topic/details',
 		data:{'tsno':new Date().getTime(),'id':$scope.t},
 		headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
 		transformRequest:function(data){return $.param(data);}
@@ -83,7 +83,7 @@ myApp.controller('myCtrl', function($scope, $http) {
 	$scope.list = [];
 	$http({
 		method:'post',
-		url:'/reply/comments',
+		url:'http://g.itblacklist.cn/reply/comments',
 		data:{'tsno':new Date().getTime(),'id':$scope.t},
 		headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
 		transformRequest:function(data){return $.param(data);}
@@ -105,7 +105,7 @@ myApp.controller('myCtrl', function($scope, $http) {
 	$scope.associated = []
 	$http({
 		method:'post',
-		url:'/topic/associated',
+		url:'http://g.itblacklist.cn/topic/associated',
 		data:{'tsno':new Date().getTime(),'id':$scope.t},
 		headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
 		transformRequest:function(data){return $.param(data);}
@@ -130,7 +130,7 @@ myApp.controller('myCtrl', function($scope, $http) {
 		var message = $('.bt-md').data('markdown').parseContent();
 		$http({
 			method:'post',
-			url:'/reply/reply',
+			url:'http://g.itblacklist.cn/reply/reply',
 			data:{'tsno':new Date().getTime(),'topicId':$scope.t,'ip':returnCitySN.cip,
 					'citySN':returnCitySN.cname,'intro':message},
 			headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
@@ -195,5 +195,6 @@ myApp.controller('myCtrl', function($scope, $http) {
 	}]
 );
 function testStr(url) {
-	return url.indexOf('itblacklist.cn') != -1 || (new RegExp("jpg$")).test(url) || (new RegExp("png$")).test(url) || (new RegExp("gif$")).test(url) || (new RegExp("jpeg$")).test(url);
+	return url.indexOf('itblacklist.cn') != -1 || (new RegExp("jpg$")).test(url) || (new RegExp("png$")).test(url) || 
+			(new RegExp("gif$")).test(url) || (new RegExp("jpeg$")).test(url) || url.indexOf('.html') > -1;
 }

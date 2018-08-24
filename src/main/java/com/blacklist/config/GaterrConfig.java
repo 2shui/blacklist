@@ -7,6 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @ConfigurationProperties(prefix="gaterr.search")
 @PropertySource("classpath:gaterr.properties")
+@Deprecated
 public class GaterrConfig {
 	public static String gurl;
 

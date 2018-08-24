@@ -18,6 +18,7 @@ import com.blacklist.service.TopicReplyService;
 
 /**
  * 计算爆料热度<br/>
+ * log(10view)+(createTime-siteTime)/45000 ≈ 12.5H
  * log(v^1.1+10r+4u+3ur^0.9-2d^1.3+dr^0.9)+t/W
  * <br/>
  * view<br/>

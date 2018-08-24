@@ -45,7 +45,10 @@
    	
 	<div class="container">
 		<div class="form-group">
-			<span class="col-sm-12 text-right">
+			<marquee class="col-lg-8 col-md-8 col-sm-12 col-xs-12" direction="right">
+				<b style="color:red;">运营不易，点下广告帮站长供服务器呗 (￣３￣)°</b>
+			</marquee>
+			<span class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-right">
 				<form class="form-inline">
 					<input type="text" ng-model="name" placeholder="公司名" class="form-control">
 					<button class="btn btn-default" ng-click="search()" type="button">
@@ -57,7 +60,10 @@
 		<br/>
 		<p hidden>怎么样 薪资 待遇 好不好 黑心 垃圾 招聘 职位</p>
 		<div>
-			<h3 class="">${topic.sketch}——${topic.company}</h3>
+			<h3 class="">
+				<span style="background-color: #CCFFCC;">IT黑名单爆料</span>&nbsp;&nbsp;&nbsp;&nbsp;
+				${topic.sketch}——${topic.company}&nbsp;&nbsp;&nbsp;&nbsp;${topic.city}
+			</h3>
 			${topic.intro}
 			<!--
 			<div class="ng-binding" ng-bind-html="topic.intro|to_trusted"></div>
@@ -105,7 +111,7 @@
 
 	</div>
 	<br/>
-	<div class="container" style="background-color:#DDD;">
+	<div class="container" style="background-color:#CCFFCC;">
 		<p class="text-danger">同城其它被吐槽公司：</p>
 		<p ng-repeat="t in associated" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 			<a class="hot_txt1" title="{{t.city}}{{t.company}}-{{t.sketch}}" href="{{t.path}}">

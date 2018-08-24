@@ -14,7 +14,7 @@ myApp.controller('myCtrl', function($scope, $http) {
 		var message = $('.bt-md').data('markdown').parseContent();
 		$http({
 			method:'post',
-			url:'/feedback/add',
+			url:'http://g.itblacklist.cn/feedback/add',
 			data:{'tsno':new Date().getTime(),'content':message,'contact':$scope.vm.contact},
 			headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
 			transformRequest:function(data){return $.param(data);}
@@ -38,7 +38,7 @@ myApp.controller('myCtrl', function($scope, $http) {
 		var message = $('.bt-md').data('markdown').parseContent();
 		$http({
 			method:'post',
-			url:'/topic/add',
+			url:'http://g.itblacklist.cn/topic/add',
 			data:{'tsno':new Date().getTime(),'city':t,'company':$scope.vm.company,
 					'sketch':$scope.vm.sketch,'intro':message,'contact':$scope.vm.contact},
 			headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
@@ -94,7 +94,7 @@ myApp.controller('myCtrl', function($scope, $http) {
 	$scope.list = [];
 	$http({
 		method:'post',
-		url:'/topic/s',
+		url:'http://g.itblacklist.cn/topic/s',
 		data:{'tsno':new Date().getTime(),'key':$scope.kw},
 		headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
 		transformRequest:function(data){return $.param(data);}
@@ -116,7 +116,7 @@ myApp.controller('myCtrl', function($scope, $http) {
 	$scope.hot = [];
 	$http({
 		method:'post',
-		url:'/topic/hot',
+		url:'http://g.itblacklist.cn/topic/hot',
 		data:{'tsno':new Date().getTime()},
 		headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
 		transformRequest:function(data){return $.param(data);}

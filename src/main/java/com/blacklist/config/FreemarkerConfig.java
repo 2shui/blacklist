@@ -14,6 +14,7 @@ public class FreemarkerConfig {
 	public static String imgPath;
 	public static String site;
 	public static String imgSite;
+	public static String gaterrPath;
 	public static String getFtlPath() {
 		return ftlPath;
 	}
@@ -49,6 +50,12 @@ public class FreemarkerConfig {
 	}
 	public static void setTopicPath(String topicPath) {
 		FreemarkerConfig.topicPath = topicPath;
+	}
+	public static String getGaterrPath() {
+		return gaterrPath;
+	}
+	public static void setGaterrPath(String gaterrPath) {
+		FreemarkerConfig.gaterrPath = gaterrPath;
 	}
 	
 }

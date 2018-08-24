@@ -81,6 +81,11 @@ public class Topic implements Serializable {
      * 驳斥数
      */
     private Integer refuteNum;
+    
+    /**
+     * 辟谣 1-未辟谣 2-辟谣中 3-已辟谣
+     * */
+    private Integer refute;
 
 
     @Id
@@ -151,6 +156,15 @@ public class Topic implements Serializable {
 	@Column(name = "contact")
 	public String getContact() {
 		return contact;
+	}
+
+	@Column(name = "refute")
+	public Integer getRefute() {
+		return refute;
+	}
+
+	public void setRefute(Integer refute) {
+		this.refute = refute;
 	}
 
 	public void setContact(String contact) {
